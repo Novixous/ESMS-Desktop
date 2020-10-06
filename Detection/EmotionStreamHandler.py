@@ -60,11 +60,11 @@ class EmotionStreamHandler:
         emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
         emotion_valid_duration = {7: 300,0: 300, 1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300}
 
-        # ****** print out all periods ******
         for i in range(0, len(self.periods)):
             if len(self.periods[i]) > 0:
                 if self.periods[i][len(self.periods[i])-1].duration < emotion_valid_duration[i]:
                     del(self.periods[i][len(self.periods[i])-1])
+        # ****** print out all periods ******
         # for i in range(0, len(self.periods)):
         #     print("===={}==== size: {}".format(emotion_dict[i], len(self.periods[i])))
         #     for period in self.periods[i]:
