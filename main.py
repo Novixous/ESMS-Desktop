@@ -36,10 +36,9 @@ while True:
         maxindex = emotionDetector.detectEmotion(cropped_img)
         cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
         
-        frameInfo.emotion = maxindex
+        streamHandler.addFrame(maxindex)
     if hasFace is not True:
-        frameInfo.emotion = 7
-    streamHandler.addFrame(frameInfo)
+        streamHandler.addFrame(7)
     cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC)) 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         sessionInfo = streamHandler.finish()

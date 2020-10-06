@@ -18,7 +18,7 @@ class EmotionStreamHandler:
         self.tempTime = 0
         self.count = 0
     
-    def addFrame(self, frame):
+    def addFrame(self, emotion):
         # duration in miliseconds to be considered a valid emotion period
         emotion_valid_duration = {7: 300,0: 300, 1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300}
         emotion_maximum_buffer_duration = {7: 300, 0: 300, 1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300}
@@ -29,9 +29,8 @@ class EmotionStreamHandler:
         self.tempTime = time.time()
         
         passedTime = int(round((self.tempTime - self.beginSession)*1000))
-        frame.timeStamp = self.tempTime
-        frame.timeEslaped = passedTime
-        self.currentFrame = frame
+
+        self.currentFrame = FrameInfo(self.tempTime, passedTime, emotion)
         self.count+=1
         if self.previousFrame.timeStamp is not None:
             for i in range(0, 8):
