@@ -4,6 +4,7 @@ from Detection.Model.FrameInfo import FrameInfo
 from Detection.Model.SessionInfo import SessionInfo
 import cv2
 import numpy as np
+from PathUtil import resource_path
 
 # prevents openCL usage and unnecessary logging messages
 cv2.ocl.setUseOpenCL(False)
@@ -23,7 +24,7 @@ while True:
         break
     frame = cv2.flip(frame, 1)
 
-    facecasc = cv2.CascadeClassifier('Detection\haarcascade_frontalface_default.xml')
+    facecasc = cv2.CascadeClassifier(resource_path('Detection\haarcascade_frontalface_default.xml'))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = facecasc.detectMultiScale(gray,scaleFactor=1.3, minNeighbors=5)
     frameInfo = FrameInfo(None, None, None)  
