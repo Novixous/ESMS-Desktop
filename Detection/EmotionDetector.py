@@ -1,10 +1,11 @@
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import MaxPooling2D
+from PathUtil import resource_path
 class EmotionDetector:
+
     def __init__(self):
         self.model = Sequential()
 
@@ -24,9 +25,11 @@ class EmotionDetector:
         self.model.add(Dropout(0.5))
         self.model.add(Dense(7, activation='softmax'))
 
-        self.model.load_weights('Detection\model-epoch-30.h5')
+        print("model path: {}".format(resource_path("Detection\Weight\model-epoch-30.h5")))
+        self.model.load_weights(resource_path("Detection\Weight\model-epoch-30.h5"))
     
     def detectEmotion(self, image):
         prediction = self.model.predict(image)
         maxindex = int(np.argmax(prediction))
         return maxindex
+    
