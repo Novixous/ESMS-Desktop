@@ -3,7 +3,10 @@ from datetime import datetime
 from Detection.Model.FrameInfo import FrameInfo
 from Detection.Model.PeriodInfo import PeriodInfo
 from Detection.Model.SessionInfo import SessionInfo
-
+emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
+# duration in miliseconds to be considered a valid emotion period
+emotion_valid_duration = {7: 4000,0: 250, 1: 250, 2: 250, 3: 500, 4: 500, 5: 250, 6: 500}
+emotion_maximum_buffer_duration = {7: 300, 0: 400, 1: 400, 2: 400, 3: 300, 4: 300, 5: 300, 6: 300}
 class EmotionStreamHandler:
     def __init__(self):
         self.frames = []
@@ -19,9 +22,6 @@ class EmotionStreamHandler:
         self.count = 0
     
     def addFrame(self, emotion):
-        # duration in miliseconds to be considered a valid emotion period
-        emotion_valid_duration = {7: 300,0: 300, 1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300}
-        emotion_maximum_buffer_duration = {7: 300, 0: 300, 1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300}
 
         if self.beginSession == 0:
             self.beginSession = time.time()
@@ -56,8 +56,7 @@ class EmotionStreamHandler:
                         del(self.periods[i][len(self.periods[i])-1])
         self.previousFrame = self.currentFrame
     def finish(self):
-        emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
-        emotion_valid_duration = {7: 300,0: 300, 1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300}
+        
 
         for i in range(0, len(self.periods)):
             if len(self.periods[i]) > 0:

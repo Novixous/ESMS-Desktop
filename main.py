@@ -2,6 +2,7 @@ from Detection.EmotionDetector import EmotionDetector
 from Detection.EmotionStreamHandler import EmotionStreamHandler
 from Detection.Model.FrameInfo import FrameInfo
 from Detection.Model.SessionInfo import SessionInfo
+from Detection.SessionEvaluator import SessionEvaluator
 import cv2
 import numpy as np
 from PathUtil import resource_path
@@ -49,5 +50,7 @@ for i in range(0, len(sessionInfo.periods)):
     for period in sessionInfo.periods[i]:
         print(period.__dict__)
         duration = int(round((period.periodEnd - period.periodStart)*1000))
+sessionEvaluator = SessionEvaluator()
+sessionEvaluator.evaluate(sessionInfo)
 cap.release()
 cv2.destroyAllWindows() 
