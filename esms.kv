@@ -1,0 +1,73 @@
+<LoginScreen>:
+
+  MDLabel:
+    font_size: 35
+    text_size: (None, None)
+    center_x: root.center_x
+    top: root.top
+    markup: True
+    text: "[color=#888888][size=28]Login to [/size][/color][color=#607D8B]ESMS[/color]"
+
+  MDTextField:
+    id: emp_code
+    size: 300, 30
+    center_x: root.center_x
+    top: root.top - 90
+    hint_text: "Employee Code"
+    required: True
+
+  MDTextField:
+    id: emp_pass
+    size: 300, 30
+    center_x: root.center_x
+    top: root.top - 150
+    hint_text: "Password"
+    password: True
+    required: True
+
+  MDRectangleFlatButton:
+    text: "LOGIN"
+    center_x: root.center_x
+    top: root.top - 230
+    size_hint: None, None
+    width: 300 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+    height: 30
+    on_press:
+      loginSuccess = root.login(root.ids.emp_code.text, root.ids.emp_pass.text)
+      loginSuccess and app.screen_manager.switch_to(app.session_screen_wrp) or None
+
+<SessionScreen>:
+
+  MDLabel:
+    font_size: 35
+    text_size: (None, None)
+    center_x: root.center_x
+    top: root.top
+    markup: True
+    text: "[color=#607D8B]ESMS[/color][color=#888888][size=28] Workspace[/size][/color]"
+
+  MDRectangleFlatButton:
+    text: "Start SESSION"
+    center_x: root.center_x
+    center_y: root.center_y - 30
+    size_hint: None, None
+    width: 300 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+    height: 30
+    on_press:
+      root.state == "end" and root.startSession() or None
+
+  MDRectangleFlatButton:
+    text: "End SESSION"
+    center_x: root.center_x
+    center_y: root.center_y - 70
+    size_hint: None, None
+    width: 300 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+    height: 30
+    on_press:
+      root.state == "start" and root.endSession() or None
+
+<LoginScreenWrapper>:
+  LoginScreen:
+
+<SessionScreenWrapper>:
+  SessionScreen:
