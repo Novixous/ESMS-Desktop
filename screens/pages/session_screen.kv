@@ -1,0 +1,26 @@
+<SessionScreen@Screen>:
+  name: 'session_screen'
+
+  BoxLayout:
+    orientation: 'vertical'
+    padding: root.width * 0.05, root.height * 0.05
+    spacing: 5
+
+    BoxLayout:
+      size_hint: [1, 0.75]
+      Image:
+        id: image_source
+        source: 'assets/video.jpg'
+        size_hint_y: None
+        height: 200
+        nocache: True
+
+    BoxLayout:
+      size_hint: [1, 0.1]
+      SessionButton:
+        image_source: image_source
+        text: "Start SESSION"
+        center_x: root.center_x
+        size_hint: None, None
+        width: root.width * 0.9 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+        height: 30
