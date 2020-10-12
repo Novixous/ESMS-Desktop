@@ -1,0 +1,42 @@
+<LoginScreen@Screen>:
+  name: 'login_screen'
+
+  Widget:
+
+    MDLabel:
+      font_size: 35
+      text_size: (None, None)
+      center_x: root.center_x
+      top: root.top
+      markup: True
+      text: "[color=#888888][size=28]Login to [/size][/color][color=#607D8B]ESMS[/color]"
+
+    MDTextField:
+      id: emp_code
+      size: 300, 30
+      center_x: root.center_x
+      top: root.top - 120
+      hint_text: "Employee Code"
+      required: True
+      write_tab: False
+
+    MDTextField:
+      id: emp_pass
+      size: 300, 30
+      center_x: root.center_x
+      top: root.top - 170
+      hint_text: "Password"
+      password: True
+      required: True
+      write_tab: False
+
+    LoginButton:
+      id: login_button
+      emp_code_inp: emp_code
+      emp_pass_inp: emp_pass
+      text: "LOGIN"
+      center_x: root.center_x
+      top: root.top - 230
+      size_hint: None, None
+      width: 300 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+      height: 30
