@@ -41,13 +41,13 @@ class SessionButton(KMDRectangleFlatButton):
       img_decoded = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
       # try:
       if self.status == 'started':
-        cv2.imwrite(resource_path('assets/v.png'), img_decoded)
-        self.image_source.source = 'assets/v.png'
+        cv2.imwrite(resource_path('assets/v.jpg'), img_decoded)
+        self.image_source.source = 'assets/v.jpg'
         self.image_source.reload()
       else:
-        self.image_source.source = 'assets/video.png'
+        self.image_source.source = 'assets/video.jpg'
         self.image_source.reload()
-        os.remove('assets/v.png')
+        os.remove('assets/v.jpg')
       # except:
       #   pass
 
@@ -94,7 +94,7 @@ class SessionButton(KMDRectangleFlatButton):
       if hasFace is not True:
         streamHandler.addFrame(7)
       img = cv2.resize(frame,(1280,960),interpolation = cv2.INTER_CUBIC)
-      img_encoded = cv2.imencode('.png', img)[1]
+      img_encoded = cv2.imencode('.jpg', img)[1]
       data_encoded = np.array(img_encoded)
       str_encoded = data_encoded.tostring()
       connection.sendall(str_encoded)

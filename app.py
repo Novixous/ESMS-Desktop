@@ -9,6 +9,7 @@ Config.set('graphics', 'height', '340')
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from PathUtil import resource_path
+from widgets.queue_screen.queue_item import QueueItem
 
 import widgets.widget_list
 # from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
@@ -25,6 +26,13 @@ class ESMSApp(MDApp):
     self.theme_cls.primary_palette = 'BlueGray'
     layout = Builder.load_file(resource_path('main.kv'))
     return layout
+
+  def on_start(self):
+    for i in range(10):
+      self.queuelist.add_widget(
+        QueueItem(text=f"Two-line item {i}", skip_self_register=True)
+      )
+
 
   pass
   # screen_manager = ScreenManager(transition=NoTransition())

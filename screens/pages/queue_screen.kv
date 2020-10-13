@@ -1,0 +1,38 @@
+#:import KMDList core.klist.KMDList
+
+<QueueItem>:
+  size_hint_y: None
+  height: content.height
+  type_swipe: "auto"
+
+  MDCardSwipeLayerBox:
+    padding: "8dp"
+
+    MDIconButton:
+      icon: "trash-can"
+      pos_hint: {"center_y": .5}
+
+  MDCardSwipeFrontBox:
+
+    TwoLineIconListItem:
+      id: content
+      text: root.text
+      secondary_text: "Secondary text here"
+      _no_ripple_effect: True
+
+      IconLeftWidget:
+        icon: "language-python"
+
+<QueueList@KMDList>:
+
+<QueueScreen@Screen>:
+  name: 'queue_screen'
+
+  BoxLayout:
+    orientation: "vertical"
+    spacing: "10dp"
+
+    ScrollView:
+
+      QueueList:
+        padding: 0
