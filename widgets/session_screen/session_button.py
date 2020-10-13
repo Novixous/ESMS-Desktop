@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import threading
 import socket
+import os
 from Detection.EmotionDetector import EmotionDetector
 from Detection.EmotionStreamHandler import EmotionStreamHandler
 from Detection.Model.FrameInfo import FrameInfo
@@ -40,12 +41,13 @@ class SessionButton(KMDRectangleFlatButton):
       img_decoded = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
       # try:
       if self.status == 'started':
-        cv2.imwrite(resource_path('assets/video/video.jpg'), img_decoded)
-        self.image_source.source = 'assets/video/video.jpg'
+        cv2.imwrite(resource_path('assets/v.png'), img_decoded)
+        self.image_source.source = 'assets/v.png'
         self.image_source.reload()
       else:
-        self.image_source.source = 'assets/video.jpg'
+        self.image_source.source = 'assets/video.png'
         self.image_source.reload()
+        os.remove('assets/v.png')
       # except:
       #   pass
 
@@ -82,27 +84,25 @@ class SessionButton(KMDRectangleFlatButton):
 
       for (x, y, w, h) in faces:
         hasFace = True
-        cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
         roi_gray = gray[y:y + h, x:x + w]
         cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
         maxindex = emotionDetector.detectEmotion(cropped_img)
+        cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
         cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
         streamHandler.addFrame(maxindex)
       if hasFace is not True:
         streamHandler.addFrame(7)
       img = cv2.resize(frame,(1280,960),interpolation = cv2.INTER_CUBIC)
-      img_encoded = cv2.imencode('.jpg', img)[1]
+      img_encoded = cv2.imencode('.png', img)[1]
       data_encoded = np.array(img_encoded)
       str_encoded = data_encoded.tostring()
       connection.sendall(str_encoded)
       connection.close()
       if self.status == 'ended':
-        sessionInfo = streamHandler.finish()
-        Clock.unschedule(self.client_recv)
         break
-      else:
-        continue
+    Clock.unschedule(self.client_recv)
+    sessionInfo = streamHandler.finish()
     for i in range(0, len(sessionInfo.periods)):
       print("===={}==== size: {}".format(emotion_dict[i], len(sessionInfo.periods[i])))
       for period in sessionInfo.periods[i]:
@@ -111,6 +111,6 @@ class SessionButton(KMDRectangleFlatButton):
     sessionEvaluator = SessionEvaluator()
     sessionEvaluator.evaluate(sessionInfo)
     cap.release()
-    cv2.destroyAllWindows() 
+    cv2.destroyAllWindows()
     # except:
     #   pass
