@@ -10,3 +10,10 @@ class QueueList(KMDList):
       self.add_widget(
         QueueItem(text=f"Customer {i}", skip_self_register=True)
       )
+
+  def remove_from_queue(self, item):
+    self.remove_widget(item)
+
+  def clear_queue(self):
+    while len(self.children) > 0:
+      self.remove_widget(self.children[0])

@@ -8,6 +8,7 @@ Config.set('graphics', 'height', '340')
 
 from kivymd.app import MDApp
 from kivy.lang import Builder
+from kivy.properties import StringProperty
 from PathUtil import resource_path
 
 import widgets.widget_list
@@ -17,6 +18,7 @@ import widgets.widget_list
 # from kivymd.app import MDApp
 
 class ESMSApp(MDApp):
+  emotion_color = StringProperty('#000000')
 
   def __init__(self, **kwargs):
     super(ESMSApp, self).__init__(**kwargs)
@@ -25,6 +27,9 @@ class ESMSApp(MDApp):
     self.theme_cls.primary_palette = 'BlueGray'
     layout = Builder.load_file(resource_path('main.kv'))
     return layout
+
+  def set_emotion_color(self, color):
+    self.emotion_color = color
 
   pass
   # screen_manager = ScreenManager(transition=NoTransition())
