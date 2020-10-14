@@ -2,25 +2,109 @@
   name: 'session_screen'
 
   BoxLayout:
-    orientation: 'vertical'
-    padding: root.width * 0.05, root.height * 0.05
-    spacing: 5
+    orientation: "vertical"
+
+    MDLabel:
+
+      font_size: 35
+      size_hint: [None, 0.1]
+      width: root.width - 10
+      pos_hint: {"center_x": 0.5}
+      text_size: (None, None)
+      markup: True
+      text: "[/color][color=#607D8B]ESMS[/color][color=#888888][size=28] Workspace[/size]"
 
     BoxLayout:
-      size_hint: [1, 0.75]
-      Image:
-        id: image_source
-        source: 'assets/video.jpg'
-        size_hint_y: None
-        height: 200
-        nocache: True
+      spacing: 5
+      size_hint: [None, 0.9]
+      width: root.width - 10
+      pos_hint: {"center_x": 0.5}
+
+      BoxLayout:
+
+        BoxLayout:
+          spacing: 5
+          orientation: "vertical"
+          size_hint: [0.5, 1]
+
+          BoxLayout:
+            size_hint: [1, 0.5]
+
+            BoxLayout:
+
+              canvas.before:
+                Color:
+                  rgba: hex('#607D8B')
+                Line:
+                  width: 0.5
+                  rectangle: self.x, self.y, self.width, self.height
+
+          BoxLayout:
+            size_hint: [1, 0.5]
+
+            BoxLayout:
+
+              canvas.before:
+                Color:
+                  rgba: hex('#607D8B')
+                Line:
+                  width: 0.5
+                  rectangle: self.x, self.y, self.width, self.height
+
+      BoxLayout:
+
+        BoxLayout:
+          spacing: 5
+          orientation: "vertical"
+          size_hint: [0.5, 1]
+
+          BoxLayout:
+            size_hint: [1, 0.5]
+
+            BoxLayout:
+
+              canvas.before:
+                Color:
+                  rgba: hex('#607D8B')
+                Line:
+                  width: 0.5
+                  rectangle: self.x, self.y, self.width, self.height
+
+          BoxLayout:
+            size_hint: [1, 0.5]
+
+            BoxLayout:
+
+              canvas.before:
+                Color:
+                  rgba: hex('#607D8B')
+                Line:
+                  width: 0.5
+                  rectangle: self.x, self.y, self.width, self.height
 
     BoxLayout:
-      size_hint: [1, 0.1]
-      SessionButton:
-        image_source: image_source
-        text: "Start SESSION"
-        center_x: root.center_x
-        size_hint: None, None
-        width: root.width * 0.9 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
-        height: 30
+      size_hint: [1, 0.01]
+
+  # BoxLayout:
+  #   orientation: 'vertical'
+  #   padding: root.width * 0.05, root.height * 0.05
+  #   spacing: 5
+
+  #   BoxLayout:
+  #     size_hint: [1, 0.75]
+  #     Image:
+  #       id: image_source
+  #       source: 'assets/video.jpg'
+  #       size_hint_y: None
+  #       height: 200
+  #       nocache: True
+
+  #   BoxLayout:
+  #     size_hint: [1, 0.1]
+  #     SessionButton:
+  #       image_source: image_source
+  #       text: "Start SESSION"
+  #       center_x: root.center_x
+  #       size_hint: None, None
+  #       width: root.width * 0.9 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
+  #       height: 30

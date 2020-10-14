@@ -10,7 +10,5 @@ class KObject:
 
     if not skip_self_register:
       setattr(esmsApp, cls, self)
-    else:
-      print('Hello skip')
 
   pass
