@@ -9,18 +9,22 @@ class LoginButton(KMDRectangleFlatButton):
   emp_pass_inp = ObjectProperty()
 
   def action(self, *args):
-    # employeeCode = self.emp_code_inp.text
-    # password = self.emp_pass_inp.text
-    # response = requests.post('http://10.1.129.103:4000/login', data={'employeeCode': employeeCode, 'password': password})
-    # jsonResponse = response.json()
-    # loginSuccess = jsonResponse['status']
+    employeeCode = self.emp_code_inp.text
+    password = self.emp_pass_inp.text
+    response = requests.post(
+      f'{self.app.end_point}/login',
+      data={'employeeCode': employeeCode, 'password': password}
+    )
+    json_respone = response.json()
+    loginSuccess = json_respone['status']
 
-    # if not loginSuccess:
-    #   Snackbar(text='Login FAILED!', duration=1).show()
-    # else:
-    #   self.app.queuelist.load_queue()
-    #   self.app.mainscreenmanager.current = 'session_screen'
-    #   Window.maximize()
-    self.app.queuelist.load_queue()
-    self.app.mainscreenmanager.current = 'queue_screen'
-    Window.maximize()
+    if not loginSuccess:
+      Snackbar(text='Login FAILED!', duration=1).show()
+    else:
+      self.app.token = json_respone['token']
+      self.app.queuelist.load_queue()
+      self.app.mainscreenmanager.current = 'queue_screen'
+      Window.maximize()
+    # self.app.queuelist.load_queue()
+    # self.app.mainscreenmanager.current = 'queue_screen'
+    # Window.maximize()

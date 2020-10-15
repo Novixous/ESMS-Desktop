@@ -13,13 +13,23 @@ from Detection.Model.SessionInfo import SessionInfo
 from Detection.SessionEvaluator import SessionEvaluator
 from PathUtil import resource_path
 from helpers.ksocket import KSocketClient
+from core.kdialog import KMDDialog
 
 class CameraImage(KImage):
-  stream_port = 9090
-  term_port = 9091
-  status = 'ended'
-  emotion_color = StringProperty(None)
-  detect_thread = None
+
+  def __init__(self, **kwargs):
+    super(CameraImage, self).__init__(**kwargs)
+    self.stream_port = 9090
+    self.term_port = 9091
+    self.status = 'ended'
+    self.emotion_color = StringProperty(None)
+    self.detect_thread = None
+    self.warning_dialog = KMDDialog(
+      auto_dismiss=False,
+      title="BE CAREFUL",
+      text="Your expression seems like critically negative!"
+    )
+    self.is_warning = False
 
   def open_camera(self):
     self.status = 'started'
@@ -56,6 +66,11 @@ class CameraImage(KImage):
         self.detect_thread = threading.Thread(target=self.detect_from_camera, daemon=True)
         self.detect_thread.start()
 
+  def show_warning_dialog(self):
+    self.warning_dialog.open()
+
+  def hide_warning_dialog(self):
+    self.warning_dialog.dismiss()
 
   def detect_from_camera(self):
     try:
@@ -94,13 +109,23 @@ class CameraImage(KImage):
           roi_gray = gray[y:y + h, x:x + w]
           cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
           maxindex = emotionDetector.detectEmotion(cropped_img)
-          self.emotion_color = emotion_colors[maxindex]
           cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
           cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
           streamHandler.addFrame(maxindex)
+          self.emotion_color = emotion_colors[maxindex]
         if hasFace is not True:
           streamHandler.addFrame(7)
+          self.emotion_color = emotion_colors[7]
+
+        if streamHandler.warning:
+          if not self.warning_dialog._window:
+            self.show_warning_dialog()
+        else:
+          if self.warning_dialog._window:
+            self.hide_warning_dialog()
+
+
         img = cv2.resize(frame,(1280,960),interpolation = cv2.INTER_CUBIC)
         img_encoded = cv2.imencode('.jpg', img)[1]
         data_encoded = np.array(img_encoded)

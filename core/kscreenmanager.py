@@ -1,11 +1,11 @@
-from kivy.uix.screenmanager import Screen, ScreenManager, CardTransition
+from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from .base.kobject import KObject
 
 class KScreenManager(ScreenManager, KObject):
 
   def __init__(self, **kwargs):
     super(KScreenManager, self).__init__(**kwargs)
-    self.transition = CardTransition()
+    self.transition = NoTransition()
 
   pass
 

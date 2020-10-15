@@ -9,19 +9,17 @@
   MDCardSwipeLayerBox:
     padding: 8
 
-    MDIconButton:
+    PickQueueButton:
+      queue_id: root.queue_id
       icon: "label-variant-outline"
       pos_hint: {"center_y": .5}
-      on_press:
-        root.app.mainscreenmanager.current = 'session_screen'
-        root.app.cameraimage.open_camera()
 
   MDCardSwipeFrontBox:
 
     TwoLineIconListItem:
       id: content
-      text: root.text
-      secondary_text: "Secondary text here"
+      text: root.queue_no
+      secondary_text: root.queue_cat
       _no_ripple_effect: True
 
       IconLeftWidget:

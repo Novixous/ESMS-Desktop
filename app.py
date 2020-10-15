@@ -8,7 +8,7 @@ Config.set('graphics', 'height', '340')
 
 from kivymd.app import MDApp
 from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from PathUtil import resource_path
 
 import widgets.widget_list
@@ -18,6 +18,11 @@ import widgets.widget_list
 # from kivymd.app import MDApp
 
 class ESMSApp(MDApp):
+  counter_id = NumericProperty(None)
+  session_id = NumericProperty(None)
+  task_list = ObjectProperty(None)
+  end_point = StringProperty('http://10.1.129.218:4000')
+  token = StringProperty(None)
   emotion_color = StringProperty('#000000')
 
   def __init__(self, **kwargs):

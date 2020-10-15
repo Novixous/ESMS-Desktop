@@ -34,7 +34,7 @@ emotion_maximum_buffer_duration = {
     SAD: 300, 
     SURPRISED: 300}
 
-angry_duration = 10000
+angry_duration = 5000
 class EmotionStreamHandler:
     def __init__(self):
         self.frames = []

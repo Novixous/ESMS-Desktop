@@ -1,3 +1,12 @@
+<TaskItem>:
+  text: self.task.name
+  _txt_bot_pad: 22
+
+  IconLeftWidget:
+    icon: 'plus'
+    on_release:
+      root.add_task_to_session()
+
 <SessionScreen@Screen>:
   name: 'session_screen'
 
@@ -9,7 +18,7 @@
       width: root.width - 10
 
       MDLabel:
-        size_hint: [0.9, 1]
+        size_hint: [0.85, 1]
         font_size: 35
         pos_hint: {"center_x": 0.5}
         text_size: (None, None)
@@ -17,7 +26,7 @@
         text: "[/color][color=#607D8B]ESMS[/color][color=#888888][size=28] Workspace[/size]"
 
       BoxLayout:
-        size_hint: [0.1, 0.3]
+        size_hint: [0.15, 0.3]
         pos_hint: {"center_y": 0.5}
 
         CompleteSessionButton:
@@ -59,18 +68,10 @@
                 width: 1.5
                 rectangle: self.x - 1, self.y - 3, self.width + 2, self.height + 6
 
-            # BoxLayout:
-            #   size_hint: [1, None]
-            #   height: "2dp"
-
             CameraImage:
               pos_hint: {"center_x": 0.5, "center_y": 0.5}
               source: 'assets/video.jpg'
               nocache: True
-
-            # BoxLayout:
-            #   size_hint: [1, None]
-            #   height: "2dp"
 
           BoxLayout:
             size_hint: [0.05, 1]
@@ -85,6 +86,38 @@
               width: 0.5
               rectangle: self.x, self.y, self.width, self.height
 
+          BoxLayout:
+            orientation: "vertical"
+
+            BoxLayout:
+              size_hint: [1, 0.1]
+              canvas.before:
+                Color:
+                  rgba: hex('#607D8B')
+                Line:
+                  width: 0.5
+                  rectangle: self.x, self.y, self.width, self.height
+
+              BoxLayout:
+                size_hint: [None, 1]
+                width: 10
+
+              MDLabel:
+
+                font_size: 20
+                text_size: (None, None)
+                markup: True
+                text: "[color=#666666]Available Tasks[/color]"
+
+            BoxLayout:
+              size_hint: [1, 0.9]
+
+              ScrollView:
+                scroll_type: ['bars', 'content']
+
+                TaskList:
+                  padding: 0
+
       BoxLayout:
         size_hint: [0.8, 1]
 
@@ -94,6 +127,18 @@
           Line:
             width: 0.5
             rectangle: self.x, self.y, self.width, self.height
+
+        # BoxLayout:
+        #   orientation: "vertical"
+
+        #   TaskTabList:
+        #     size_hint: [1, 1]
+
+        #     TaskTab:
+        #       text: 'Task 001'
+
+        #     TaskTab:
+        #       text: 'Task 002'
 
     BoxLayout:
       size_hint: [1, 0.01]
