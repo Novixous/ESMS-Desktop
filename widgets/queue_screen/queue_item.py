@@ -1,11 +1,12 @@
 from core.kcard import KMDCardSwipe
-from kivy.properties import StringProperty, NumericProperty
+from kivy.properties import ObjectProperty
 
 class QueueItem(KMDCardSwipe):
-  queue_id = NumericProperty()
-  queue_no = StringProperty()
-  queue_cat = StringProperty()
-  is_closing = False
+  queue = ObjectProperty(None)
+
+  def __init__(self, **kwargs):
+    super(QueueItem, self).__init__(**kwargs)
+    self.is_closing = False
 
   def close_card(self):
     self.is_closing = True

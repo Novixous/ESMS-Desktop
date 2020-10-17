@@ -10,7 +10,7 @@
     padding: 8
 
     PickQueueButton:
-      queue_id: root.queue_id
+      queue_id: root.queue.qid
       icon: "label-variant-outline"
       pos_hint: {"center_y": .5}
 
@@ -18,15 +18,15 @@
 
     TwoLineIconListItem:
       id: content
-      text: root.queue_no
-      secondary_text: root.queue_cat
+      text: root.queue.number
+      secondary_text: root.queue.category
       _no_ripple_effect: True
 
       IconLeftWidget:
         icon: "account-circle"
 
 <QueueScreen@Screen>:
-  name: 'queue_screen'
+  name: "queue_screen"
 
   BoxLayout:
     orientation: "vertical"
@@ -35,10 +35,10 @@
 
       font_size: 35
       size_hint: [1, 0.1]
-      halign: 'center'
+      halign: "center"
       text_size: (None, None)
       markup: True
-      text: "[/color][color=#607D8B]ESMS[/color][color=#888888][size=28] Customer Queue[/size]"
+      text: "[color=#607D8B]ESMS[/color][color=#888888][size=28] Customer Queue[/size][/color]"
 
     BoxLayout:
       size_hint: [0.4, 0.8]
@@ -46,13 +46,13 @@
 
       canvas.before:
         Color:
-          rgba: hex('#607D8B')
+          rgba: hex("#607D8B")
         Line:
           width: 0.5
           rectangle: self.x, self.y, self.width, self.height
 
       ScrollView:
-        scroll_type: ['bars', 'content']
+        scroll_type: ["bars", "content"]
 
         QueueList:
           padding: 0

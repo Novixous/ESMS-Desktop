@@ -3,40 +3,269 @@
   _txt_bot_pad: 22
 
   IconLeftWidget:
-    icon: 'plus'
+    icon: "plus"
     on_release:
       root.add_task_to_session()
 
+<KSheetLabel>:
+  size_hint_x: None
+  width: content.width
+
+  canvas.before:
+    Color:
+      rgba: hex("#90A4AE") if root.state == "inactive" else hex("#FFFFFF")
+    Rectangle:
+      pos: self.pos
+      size: self.size
+    Color:
+      rgba: hex("#EEEEEE") if root.state == "inactive" else hex("#37474F")
+    Line:
+      width: 0.5
+      points: [root.width + root.x, 0, root.width + root.x, root.height]
+    Line:
+      width: 0.5
+      points: [root.x, 0, root.x, root.height]
+
+  Widget:
+    id: content
+    width: labeltext.texture_size[0] + 80
+
+    KSheetLabelText:
+      id: labeltext
+      klabel: root
+      text_size: (None, None)
+      center_x: self.parent.center_x - 15
+      center_y: self.parent.center_y
+      theme_text_color: "Custom"
+      text_color: hex("#FFFFFF") if root.state == "inactive" else hex("#607D8B")
+      markup: True
+      text: root.text if root.state == "inactive" else ("[b]" + root.text + "[/b]")
+
+    MDIconButton:
+      id: closebutton
+      icon: "close"
+      center_y: self.parent.center_y
+      right: self.parent.right
+      theme_text_color: "Custom"
+      text_color: hex("#FFFFFF") if root.state == "inactive" else hex("#607D8B")
+      on_release:
+        root.remove()
+
+<KSheetBase>:
+
+  ScrollView:
+    scroll_type: ["bars", "content"]
+
+    MDList:
+      padding: 50, 50, 50, 50
+
+      MDLabel:
+        size_hint: [1, None]
+        font_size: 28
+        height: 80
+        text_size: (None, None)
+        markup: True
+        text: "[color=#455A64][b]" + root.text_label + "[/b][/color]"
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDTextField:
+          size_hint: [1, None]
+          height: 30
+          hint_text: "Customer Full Name"
+          write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDTextField:
+          size_hint: [1, None]
+          height: 30
+          hint_text: "Customer ID Card"
+          write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDTextField:
+          size_hint: [1, None]
+          height: 30
+          hint_text: "Customer Phone"
+          write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDTextField:
+          size_hint: [1, None]
+          height: 30
+          hint_text: "Customer Address"
+          write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDTextField:
+          size_hint: [1, None]
+          height: 30
+          hint_text: "Account Number"
+          write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDTextField:
+          size_hint: [1, None]
+          height: 30
+          hint_text: "Amount"
+          write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDCheckbox:
+          size_hint: [None, None]
+          size: (40, 40)
+          pos_hint: {"center_y": .5}
+
+        MDLabel:
+          size_hint: [1, None]
+          height: 30
+          pos_hint: {"center_y": .5}
+          theme_text_color: "Custom"
+          text_color: hex("#607D8B")
+          text: "Confirmation 1"
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDCheckbox:
+          size_hint: [None, None]
+          size: (40, 40)
+          pos_hint: {"center_y": .5}
+
+        MDLabel:
+          size_hint: [1, None]
+          height: 30
+          pos_hint: {"center_y": .5}
+          theme_text_color: "Custom"
+          text_color: hex("#607D8B")
+          text: "Confirmation 2"
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        MDCheckbox:
+          size_hint: [None, None]
+          size: (40, 40)
+          pos_hint: {"center_y": .5}
+
+        MDLabel:
+          size_hint: [1, None]
+          height: 30
+          pos_hint: {"center_y": .5}
+          theme_text_color: "Custom"
+          text_color: hex("#607D8B")
+          text: "Confirmation 3"
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        BoxLayout:
+          size_hint: [None, 1]
+          width: 100
+
+          MDRectangleFlatButton:
+            size_hint: [1, None]
+            height: 30
+            text: "DONE"
+
+<KSheetsScrollView>:
+  size_hint: 1, 1
+  do_scroll_y: False
+  bar_color: 0, 0, 0, 0
+  bar_inactive_color: 0, 0, 0, 0
+  bar_width: 0
+
+<KSheetsMain>:
+  scroll_type: ["bars", "content"]
+
+<TaskSheets>:
+  bar: sheetsbar
+  main: maincontent
+  anchor_y: "top"
+
+  BoxLayout:
+    orientation: "vertical"
+
+    KSheetsBar:
+      id: sheetsbar
+      scrollview: scrollview
+      layout: layout
+      size_hint: [1, None]
+      height: 50
+
+      canvas.before:
+        Color:
+          rgba: hex("#B0BEC5")
+        Rectangle:
+          pos: self.pos
+          size: self.size
+
+      ScrollView:
+        id: scrollview
+
+        KSheetsGridLayout:
+          id: layout
+          spacing: 1
+          rows: 1
+          size_hint_y: 1
+          adaptive_width: True
+
+    KSheetsMain:
+      id: maincontent
+      size_hint: [1, 1]
+
 <SessionScreen@Screen>:
-  name: 'session_screen'
+  name: "session_screen"
 
   BoxLayout:
     orientation: "vertical"
 
     BoxLayout:
-      size_hint: [None, 0.1]
-      width: root.width - 10
+      size_hint: [1, 0.1]
+      padding: [5, 0, 5, 5]
 
       MDLabel:
-        size_hint: [0.85, 1]
+        size_hint: [0.8, 1]
         font_size: 35
-        pos_hint: {"center_x": 0.5}
         text_size: (None, None)
         markup: True
-        text: "[/color][color=#607D8B]ESMS[/color][color=#888888][size=28] Workspace[/size]"
+        text: "[color=#607D8B]ESMS[/color][color=#888888][size=28] Workspace[/size][/color]"
 
       BoxLayout:
-        size_hint: [0.15, 0.3]
-        pos_hint: {"center_y": 0.5}
+        size_hint: [0.2, 1]
 
-        CompleteSessionButton:
-          text: "COMPLETE SESSION"
+      CompleteSessionButton:
+        size_hint: [None, None]
+        pos_hint: {"center_y": 0.5}
+        text: "COMPLETE SESSION"
 
     BoxLayout:
       spacing: 5
-      size_hint: [None, 0.9]
-      width: root.width - 10
-      pos_hint: {"center_x": 0.5}
+      size_hint: [1, 0.9]
+      padding: [5, 0, 5, 5]
 
       BoxLayout:
         spacing: 5
@@ -48,7 +277,7 @@
 
           canvas.before:
             Color:
-              rgba: hex('#607D8B')
+              rgba: hex("#607D8B")
             Line:
               width: 0.5
               rectangle: self.x, self.y, self.width, self.height
@@ -69,8 +298,10 @@
                 rectangle: self.x - 1, self.y - 3, self.width + 2, self.height + 6
 
             CameraImage:
+              source: "assets/video.jpg"
               pos_hint: {"center_x": 0.5, "center_y": 0.5}
-              source: 'assets/video.jpg'
+              allow_stretch: True
+              anim_delay: 0.05
               nocache: True
 
           BoxLayout:
@@ -81,7 +312,7 @@
 
           canvas.before:
             Color:
-              rgba: hex('#607D8B')
+              rgba: hex("#607D8B")
             Line:
               width: 0.5
               rectangle: self.x, self.y, self.width, self.height
@@ -93,52 +324,38 @@
               size_hint: [1, 0.1]
               canvas.before:
                 Color:
-                  rgba: hex('#607D8B')
-                Line:
-                  width: 0.5
-                  rectangle: self.x, self.y, self.width, self.height
+                  rgba: hex("#AAAAAA")
+                Rectangle:
+                  pos: self.pos
+                  size: self.size
 
               BoxLayout:
                 size_hint: [None, 1]
-                width: 10
+                width: 20
 
               MDLabel:
 
                 font_size: 20
                 text_size: (None, None)
                 markup: True
-                text: "[color=#666666]Available Tasks[/color]"
+                text: "[color=#FFFFFF]Available Tasks[/color]"
 
             BoxLayout:
               size_hint: [1, 0.9]
 
               ScrollView:
-                scroll_type: ['bars', 'content']
+                scroll_type: ["bars", "content"]
 
                 TaskList:
-                  padding: 0
 
       BoxLayout:
         size_hint: [0.8, 1]
 
         canvas.before:
           Color:
-            rgba: hex('#607D8B')
+            rgba: hex("#607D8B")
           Line:
             width: 0.5
             rectangle: self.x, self.y, self.width, self.height
 
-        # BoxLayout:
-        #   orientation: "vertical"
-
-        #   TaskTabList:
-        #     size_hint: [1, 1]
-
-        #     TaskTab:
-        #       text: 'Task 001'
-
-        #     TaskTab:
-        #       text: 'Task 002'
-
-    BoxLayout:
-      size_hint: [1, 0.01]
+        TaskSheets:

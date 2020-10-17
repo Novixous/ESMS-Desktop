@@ -13,7 +13,7 @@ from Detection.Model.SessionInfo import SessionInfo
 from Detection.SessionEvaluator import SessionEvaluator
 from PathUtil import resource_path
 from helpers.ksocket import KSocketClient
-from core.kdialog import KMDDialog
+from .warning_dialog import WarningDialog
 
 class CameraImage(KImage):
 
@@ -24,7 +24,7 @@ class CameraImage(KImage):
     self.status = 'ended'
     self.emotion_color = StringProperty(None)
     self.detect_thread = None
-    self.warning_dialog = KMDDialog(
+    self.warning_dialog = WarningDialog(
       auto_dismiss=False,
       title="BE CAREFUL",
       text="Your expression seems like critically negative!"
@@ -35,7 +35,7 @@ class CameraImage(KImage):
     self.status = 'started'
     self.detect_thread = threading.Thread(target=self.detect_from_camera, daemon=True)
     self.detect_thread.start()
-    Clock.schedule_interval(self.client_recv, 0.1)
+    Clock.schedule_interval(self.client_recv, 0.05)
 
   def close_camera(self):
     self.status = 'ended'
@@ -77,13 +77,12 @@ class CameraImage(KImage):
       server_stream_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       server_stream_socket.bind((socket.gethostname(), self.stream_port))
       server_stream_socket.listen()
-      print(f'\nServer started at {str(socket.gethostbyname(socket.gethostname()))} at port {str(self.stream_port)}')
       # prevents openCL usage and unnecessary logging messages
       cv2.ocl.setUseOpenCL(False)
 
       # dictionary which assigns each label an emotion (alphabetical order)
       emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
-      emotion_colors = {7: "#000000", 0: "#FD1A13", 1: "#D4CE15", 2: "#564506", 3: "#FEDF03", 4: "#D0CECE", 5: "#00B9D4", 6: "#A900FF"}
+      emotion_colors = {7: "#000000", 0: "#FF005A", 1: "#33CC33", 2: "#9933FF", 3: "#FFCC00", 4: "#996600", 5: "#0099FF", 6: "#33CCCC"}
 
       cap = cv2.VideoCapture(0)
       streamHandler = EmotionStreamHandler()
@@ -125,9 +124,9 @@ class CameraImage(KImage):
           if self.warning_dialog._window:
             self.hide_warning_dialog()
 
-
-        img = cv2.resize(frame,(1280,960),interpolation = cv2.INTER_CUBIC)
-        img_encoded = cv2.imencode('.jpg', img)[1]
+        img = cv2.resize(frame,(400,300),interpolation = cv2.INTER_CUBIC)
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+        result, img_encoded = cv2.imencode('.jpg', img, encode_param)
         data_encoded = np.array(img_encoded)
         str_encoded = data_encoded.tostring()
         connection.sendall(str_encoded)

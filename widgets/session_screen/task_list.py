@@ -17,6 +17,9 @@ class Task():
 
 class TaskList(KMDList):
 
+  def __init__(self, **kwargs):
+    super(TaskList, self).__init__(**kwargs)
+
   def load_task(self):
     if self.app.token is not None and self.app.counter_id is not None:
       bearer_token = f'Bearer {self.app.token}'
@@ -58,7 +61,19 @@ class TaskList(KMDList):
                 skip_self_register=True
               )
             )
+    else:
+      for t in range(20):
+        tno = f'000{t}'
+        self.add_widget(
+          TaskItem(
+            task=Task(
+              tid=t,
+              name=f'Task number {tno[(len(tno) - 3):]}',
+              code=f'T{tno[(len(tno) - 3):]}'
+            ),
+            skip_self_register=True
+          )
+        )
 
   def clear_task(self):
-    while len(self.children) > 0:
-      self.remove_widget(self.children[0])
+    self.clear_widgets()
