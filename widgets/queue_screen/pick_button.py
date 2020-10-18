@@ -36,7 +36,7 @@ class PickQueueButton(KMDIconButton):
       data3 = json_res3['message']
       self.app.session_id = data3['id']
 
-      self.app.tasklist.load_task()
+      self.app.categorylist.load_categories()
       self.app.mainscreenmanager.current = 'session_screen'
       
       def open_session_camera(interval):

@@ -5,7 +5,7 @@ import requests
 
 class Queue():
 
-  def __init__(self, qid=None, number=None, category=None, **kwargs):
+  def __init__(self, qid=None, number=None, category=None):
     self.qid = qid
     self.number = number
     self.category = category
@@ -17,7 +17,7 @@ class QueueList(KMDList):
     super(QueueList, self).__init__(**kwargs)
 
   def load_queue(self):
-    self.app.tasklist.clear_task()
+    self.app.categorylist.clear_categories()
     if self.app.token is not None:
       bearer_token = f'Bearer {self.app.token}'
       headers = {'Authorization': bearer_token}

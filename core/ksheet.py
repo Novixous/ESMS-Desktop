@@ -1,6 +1,6 @@
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.properties import ObjectProperty, StringProperty
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.label import MDLabel
 from .base.kobject import KObject
@@ -21,14 +21,12 @@ class KSheetLabelText(MDLabel):
 
   pass
 
-class KSheetLabel(BoxLayout):
+class KSheetLabel(MDBoxLayout):
   ksheet = ObjectProperty(None)
   state = StringProperty('inactive')
   text = StringProperty(None)
 
-  def __init__(self, ksheet=None, text=None, **kwargs):
-    self.ksheet = ksheet
-    self.text = text
+  def __init__(self, **kwargs):
     super(KSheetLabel, self).__init__(**kwargs)
     self.register_event_type('on_label_touch')
 
@@ -50,18 +48,16 @@ class KSheetLabel(BoxLayout):
 
   pass
 
-class KSheetBase(BoxLayout):
+class KSheetBase(MDBoxLayout):
   ksheets = ObjectProperty(None)
   previous_sheet = None
   next_sheet = None
   label = ObjectProperty(None)
   text_label = StringProperty(None)
 
-  def __init__(self, ksheets=None, text_label=None, **kwargs):
-    self.ksheets = ksheets
-    self.text_label = text_label
-    self.label = KSheetLabel(ksheet=self, text=self.text_label)
+  def __init__(self, **kwargs):
     super(KSheetBase, self).__init__(**kwargs)
+    self.label = KSheetLabel(ksheet=self, text=self.text_label)
 
   pass
 
@@ -102,7 +98,7 @@ class KSheetsGridLayout(MDGridLayout):
 
   pass
 
-class KSheetsBar(BoxLayout):
+class KSheetsBar(MDBoxLayout):
   scrollview = ObjectProperty(None)
   layout = ObjectProperty(None)
 
@@ -111,7 +107,7 @@ class KSheetsBar(BoxLayout):
 
   pass
 
-class KSheetsMain(BoxLayout):
+class KSheetsMain(MDBoxLayout):
 
   def __init__(self, **kwargs):
     super(KSheetsMain, self).__init__(**kwargs)
@@ -122,9 +118,7 @@ class KSheets(AnchorLayout, KObject):
   main = ObjectProperty(None)
   bar = ObjectProperty(None)
 
-  def __init__(self, main=None, bar=None, **kwargs):
-    self.main = main
-    self.bar = bar
+  def __init__(self, **kwargs):
     super(KSheets, self).__init__(**kwargs)
     self.first_sheet = None
     self.register_event_type('on_sheet_switch')

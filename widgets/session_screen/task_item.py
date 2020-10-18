@@ -9,10 +9,9 @@ class TaskItem(KOneLineAvatarIconListItem):
     self._no_ripple_effect = True
     super(TaskItem, self).__init__(**kwargs)
 
-  def __init__(self, **kwargs):
-    super(TaskItem, self).__init__(**kwargs)
-
   def add_task_to_session(self):
+    print('SESSIONIDDDD', self.app.session_id)
+    print('TASKIDDDD', self.task.tid)
     self.app.tasksheets.add_widget(
       KSheetBase(
         ksheets=self.app.tasksheets,

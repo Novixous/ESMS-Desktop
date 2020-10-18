@@ -37,10 +37,3 @@ class LoginButton(KMDRectangleFlatButton):
 
     # self.app.queuelist.load_queue()
     # self.app.mainscreenmanager.current = 'queue_screen'
-
-    # self.app.tasklist.load_task()
-    # self.app.mainscreenmanager.current = 'session_screen'
-    
-    # def open_session_camera(interval):
-    #   self.app.cameraimage.open_camera()
-    # Clock.schedule_once(open_session_camera, 0)
