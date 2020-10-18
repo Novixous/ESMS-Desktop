@@ -1,42 +1,70 @@
 <LoginScreen@Screen>:
-  name: 'login_screen'
+  name: "login_screen"
 
-  Widget:
+  BoxLayout:
+    orientation: "vertical"
 
     MDLabel:
+      size_hint: [1, 0.2]
       font_size: 35
       text_size: (None, None)
-      center_x: root.center_x
-      top: root.top
+      halign: "center"
       markup: True
       text: "[color=#888888][size=28]Login to [/size][/color][color=#607D8B]ESMS[/color]"
 
-    MDTextField:
-      id: emp_code
-      size: 300, 30
-      center_x: root.center_x
-      top: root.top - 120
-      hint_text: "Employee Code"
-      required: True
-      write_tab: False
+    BoxLayout:
+      orientation: "vertical"
+      size_hint: [1, 0.15]
 
-    MDTextField:
-      id: emp_pass
-      size: 300, 30
-      center_x: root.center_x
-      top: root.top - 170
-      hint_text: "Password"
-      password: True
-      required: True
-      write_tab: False
+      BoxLayout:
+        size_hint: [None, 1]
+        pos_hint: {"center_x": 0.5}
+        width: 300
 
-    LoginButton:
-      id: login_button
-      emp_code_inp: emp_code
-      emp_pass_inp: emp_pass
-      text: "LOGIN"
-      center_x: root.center_x
-      top: root.top - 230
-      size_hint: None, None
-      width: 300 + (self.ids.lbl_txt.texture_size[0] - self.ids.lbl_txt.texture_size[0])
-      height: 30
+        MDTextField:
+          size_hint: [1, None]
+          id: emp_code
+          height: 30
+          center_x: root.center_x
+          hint_text: "Employee Code"
+          required: True
+          write_tab: False
+
+    BoxLayout:
+      orientation: "vertical"
+      size_hint: [1, 0.15]
+
+      BoxLayout:
+        size_hint: [None, 1]
+        pos_hint: {"center_x": 0.5}
+        width: 300
+
+        MDTextField:
+          size_hint: [1, None]
+          id: emp_pass
+          height: 30
+          center_x: root.center_x
+          hint_text: "Password"
+          password: True
+          required: True
+          write_tab: False
+
+    BoxLayout:
+      orientation: "vertical"
+      size_hint: [1, 0.2]
+
+      BoxLayout:
+        size_hint: [None, 1]
+        pos_hint: {"center_x": 0.5}
+        width: 300
+
+        LoginButton:
+          emp_code_inp: emp_code
+          emp_pass_inp: emp_pass
+          size_hint: [1, None]
+          height: 30
+          text: "LOGIN"
+          center_x: root.center_x
+
+    BoxLayout:
+      size_hint: [1, 0.3]
