@@ -1,6 +1,5 @@
 from core.kbutton import KMDIconButton
 from kivy.properties import NumericProperty
-from kivy.clock import Clock
 import requests
 
 class PickQueueButton(KMDIconButton):
@@ -13,19 +12,20 @@ class PickQueueButton(KMDIconButton):
     if self.app.token is not None:
       bearer_token = f'Bearer {self.app.token}'
       headers = {'Authorization': bearer_token}
-      response = requests.get(
-        f'{self.app.end_point}/counters',
-        headers=headers
-      )
-      json_respone = response.json()
-      data = json_respone['message']
-      counter_id = data['counterId']
-      self.app.counter_id = counter_id
+      print('self.app.counter_id:', self.app.counter_id)
+      if self.app.counter_id is None:
+        response = requests.get(
+          f'{self.app.end_point}/counters',
+          headers=headers
+        )
+        json_respone = response.json()
+        data = json_respone['message']
+        self.app.counter_id = data['counterId']
 
       res2 = requests.post(
         f'{self.app.end_point}/queues/assign',
         headers=headers,
-        data={'counterId':counter_id,'queueId':self.queue_id}
+        data={'counterId':self.app.counter_id,'queueId':self.queue_id}
       )
 
       res3 = requests.post(
@@ -38,7 +38,4 @@ class PickQueueButton(KMDIconButton):
 
       self.app.categorylist.load_categories()
       self.app.mainscreenmanager.current = 'session_screen'
-      
-      def open_session_camera(interval):
-        self.app.cameraimage.open_camera()
-      Clock.schedule_once(open_session_camera, 0)
+      self.app.cameraimage.open_camera()

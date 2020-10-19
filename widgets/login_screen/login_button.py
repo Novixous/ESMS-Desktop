@@ -2,7 +2,6 @@ from core.kbutton import KMDRectangleFlatButton
 from kivy.properties import ObjectProperty
 from kivymd.uix.snackbar import Snackbar
 from kivy.core.window import Window
-from kivy.clock import Clock
 import requests
 
 class LoginButton(KMDRectangleFlatButton):
@@ -29,11 +28,17 @@ class LoginButton(KMDRectangleFlatButton):
       Snackbar(text='Login FAILED!', duration=1).show()
     else:
       self.app.token = json_respone['token']
-      self.app.queuelist.load_queue()
-      Window.maximize()
-      self.app.mainscreenmanager.current = 'queue_screen'
-
-    # Window.maximize()
-
-    # self.app.queuelist.load_queue()
-    # self.app.mainscreenmanager.current = 'queue_screen'
+      bearer_token = f'Bearer {self.app.token}'
+      headers = {'Authorization': bearer_token}
+      response2 = requests.get(
+        f'{self.app.end_point}/shifts/active-shift',
+        headers=headers
+      )
+      json_respone2 = response2.json()
+      active_shifts = json_respone2['message']
+      if active_shifts is not None and len(active_shifts) > 0:
+        self.app.shift_id = active_shifts[0]['id']
+        self.app.counter_id = active_shifts[0]['counterId']
+        self.app.queuelist.load_queue()
+        Window.maximize()
+        self.app.mainscreenmanager.current = 'queue_screen'
