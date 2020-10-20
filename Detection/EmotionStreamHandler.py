@@ -96,13 +96,9 @@ class EmotionStreamHandler:
             if len(self.periods[i]) > 0:
                 if self.periods[i][len(self.periods[i])-1].duration < emotion_valid_duration[i]:
                     del(self.periods[i][len(self.periods[i])-1])
-        # ****** print out all periods ******
-        # for i in range(0, len(self.periods)):
-        #     print("===={}==== size: {}".format(emotion_dict[i], len(self.periods[i])))
-        #     for period in self.periods[i]:
-        #         print(period.__dict__)
-        #         duration = int(round((period.periodEnd - period.periodStart)*1000))
-        # print("__________________________________________________________________________________________")
-        # print("__________________________________________________________________________________________")
+        for periods in self.periods:
+            for period in periods:
+                period.periodStart = int(round((period.periodStart - self.beginSession)*1000))
+                period.periodEnd = int(round((period.periodEnd - self.beginSession)*1000))
         sessionInfo = SessionInfo(self.frames, self.beginSession, self.tempTime, self.periods) 
         return sessionInfo
