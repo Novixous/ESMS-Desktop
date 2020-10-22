@@ -23,6 +23,7 @@ class SessionEvaluator:
         self.angry_warning = 0
         self.angry_duration_warning_max = 0
         self.no_face_detected_duration_warning_max = 0
+        self.emotionless_warning = False
         for i in range(0, 8):
             self.emotions_duration.append(0)
             self.emotions_period_count.append(0)
@@ -73,6 +74,8 @@ class SessionEvaluator:
                 negative_point = (self.negative_emotions_duration / sum_negative_positive_duration)*negative_weight
                 positive_point = (self.positive_emotions_duration / sum_negative_positive_duration)*positive_weight
                 score = self.modified_sigmoid(positive_point-negative_point)
+        elif neutral_duration_percentage > 0.7:
+            self.emotionless_warning = True
         print("Session Duration: {}".format(session_duration))
         for i in range(0, 8):
             print("=============================================")
