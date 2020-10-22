@@ -1,8 +1,8 @@
-from Detection.EmotionDetector import EmotionDetector
-from Detection.EmotionStreamHandler import EmotionStreamHandler
-from Detection.Model.FrameInfo import FrameInfo
-from Detection.Model.SessionInfo import SessionInfo
-from Detection.SessionEvaluator import SessionEvaluator
+from Detection.emotion_detector import EmotionDetector
+from Detection.emotion_stream_handler import EmotionStreamHandler
+from Detection.Model.frame_info import FrameInfo
+from Detection.Model.session_info import SessionInfo
+from Detection.session_evaluator import SessionEvaluator
 import cv2
 import numpy as np
 from PathUtil import resource_path
@@ -16,7 +16,7 @@ emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful",
 cap = cv2.VideoCapture(0)
 streamHandler = EmotionStreamHandler()
 emotionDetector = EmotionDetector()
-sessionInfo = SessionInfo(None, None, None, None)
+session_info = SessionInfo(None, None, None, None, None)
 while True:
     hasFace = False
     # Find haar cascade to draw bounding box around face
@@ -35,22 +35,22 @@ while True:
         cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
         roi_gray = gray[y:y + h, x:x + w]
         cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
-        maxindex = emotionDetector.detectEmotion(cropped_img)
+        maxindex = emotionDetector.detect_emotion(cropped_img)
         cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
         
-        streamHandler.addFrame(maxindex)
+        streamHandler.add_frame(maxindex)
     if hasFace is not True:
-        streamHandler.addFrame(7)
+        streamHandler.add_frame(7)
     cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC)) 
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        sessionInfo = streamHandler.finish()
+        session_info = streamHandler.finish()
         break
-for i in range(0, len(sessionInfo.periods)):
-    print("===={}==== size: {}".format(emotion_dict[i], len(sessionInfo.periods[i])))
-    for period in sessionInfo.periods[i]:
+for i in range(0, len(session_info.periods)):
+    print("===={}==== size: {}".format(emotion_dict[i], len(session_info.periods[i])))
+    for period in session_info.periods[i]:
         print(period.__dict__)
-        duration = int(round((period.periodEnd - period.periodStart)*1000))
-sessionEvaluator = SessionEvaluator()
-sessionEvaluator.evaluate(sessionInfo)
+        duration = int(round((period.period_start - period.period_end)*1000))
+session_evaluator = SessionEvaluator()
+session_evaluator.evaluate(session_info)
 cap.release()
 cv2.destroyAllWindows() 
