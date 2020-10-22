@@ -28,7 +28,7 @@ class EmotionDetector:
         print("model path: {}".format(resource_path("Detection\Weight\model-epoch-30.h5")))
         self.model.load_weights(resource_path("Detection\Weight\model-epoch-30.h5"))
     
-    def detectEmotion(self, image):
+    def detect_emotion(self, image):
         prediction = self.model.predict(image)
         maxindex = int(np.argmax(prediction))
         return maxindex
