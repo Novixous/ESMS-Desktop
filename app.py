@@ -72,6 +72,25 @@ class ESMSApp(MDApp):
   def set_emotion_color(self, color):
     self.emotion_color = color
 
+  def ms_to_str(self, ms, call_count=1):
+    if ms < 1000:
+      return str(ms) + f' ms'
+    if ms < 60000:
+      secs = ms // 1000
+      call_count += 1
+      return str(secs) + f' sec{"" if secs == 1 else "s"}'
+    if ms < 3600000:
+      mins = ms // 60000
+      call_count += 1
+      return str(mins) + f' min{"" if mins == 1 else "s"} ' + (
+        self.ms_to_str(ms % 60000, call_count)
+      )
+    hours = ms // 3600000
+    call_count += 1
+    return str(hours) + f' hour{"" if hours == 1 else "s"} ' + (
+      self.ms_to_str(ms % 3600000, call_count)
+    )
+
   pass
 
 def main():

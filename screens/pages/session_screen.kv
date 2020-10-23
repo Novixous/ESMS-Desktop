@@ -367,100 +367,238 @@
 
 <SessionResultContent>:
   size_hint: [None, None]
-  spacing: 12
   width: 800
-  height: 600
+  height: 400
   orientation: "vertical"
 
   BoxLayout:
     size_hint: [1, None]
+    height: 80
 
     BoxLayout:
       size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
 
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Total Session duration"
-        text: str(app.session_result_map["total_session_duration"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Total Session duration:[/u]"
 
-  BoxLayout:
-    size_hint: [1, None]
-    height: 50
-    spacing: 18
-
-    BoxLayout:
-      size_hint: [0.5, None]
-
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Total Negative expression duration"
-        text: str(app.session_result_map["negative_emotions_duration"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
-
-    BoxLayout:
-      size_hint: [0.5, None]
-
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Total Neutral expression duration"
-        text: str(app.session_result_map["neutral_emotions_duration"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
-
-    BoxLayout:
-      size_hint: [0.5, None]
-
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Total Positive expression duration"
-        text: str(app.session_result_map["positive_emotions_duration"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
+      MDLabel:
+        font_size: 18
+        text: app.ms_to_str(app.session_result_map["total_session_duration"]) if app.session_result_map is not None else "0"
 
   BoxLayout:
     size_hint: [1, None]
-    height: 50
-    spacing: 18
+    height: 60
 
     BoxLayout:
-      size_hint: [0.5, None]
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
 
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Angry warning count"
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Total Negative expression duration:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: app.ms_to_str(app.session_result_map["negative_emotions_duration"]) if app.session_result_map is not None else "0"
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Total Neutral expression duration:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: app.ms_to_str(app.session_result_map["neutral_emotions_duration"]) if app.session_result_map is not None else "0"
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Total Positive expression duration:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: app.ms_to_str(app.session_result_map["positive_emotions_duration"]) if app.session_result_map is not None else "0"
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 60
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Angry warning count:[/u]"
+
+      MDLabel:
+        font_size: 18
         text: str(app.session_result_map["angry_warning"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
 
     BoxLayout:
-      size_hint: [0.5, None]
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
 
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Max Angry expression duration"
-        text: str(app.session_result_map["angry_duration_warning_max"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Max Angry expression duration:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: app.ms_to_str(app.session_result_map["angry_duration_warning_max"]) if app.session_result_map is not None else "0"
 
   BoxLayout:
     size_hint: [1, None]
-    height: 50
-    spacing: 18
+    height: 60
 
     BoxLayout:
-      size_hint: [0.5, None]
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
 
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Leaving Workspace warning count"
-        text: str(app.session_result_map["angry_warning"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Leaving the working space warning count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.session_result_map["no_face_detected_warning"]) if app.session_result_map is not None else "0"
 
     BoxLayout:
-      size_hint: [0.5, None]
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
 
-      MDTextField:
-        mode: "rectangle"
-        hint_text: "Max Leaving Workspace duration"
-        text: str(app.session_result_map["angry_duration_warning_max"]) if app.session_result_map is not None else "0"
-        current_hint_text_color: [0, 0, 0, 1]
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Max Leaving the working space duration:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: app.ms_to_str(app.session_result_map["no_face_detected_duration_warning_max"]) if app.session_result_map is not None else "0"
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 100
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 100
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body1"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Overview Emotion Expression:[/u]"
+
+      MDLabel:
+        font_size: 30
+        theme_text_color: "Custom"
+        text_color: hex("#34A853") if app.session_result_map is not None and app.session_result_map["emotion_level"] > 0 else (hex("#EA4335") if app.session_result_map is not None and app.session_result_map["emotion_level"] < 0 else hex("#4285F4"))
+        text: "Positive" if app.session_result_map is not None and app.session_result_map["emotion_level"] > 0 else ("Negative" if app.session_result_map is not None and app.session_result_map["emotion_level"] < 0 else "Neutral")
 
   BoxLayout:
     size_hint: [1, 1]

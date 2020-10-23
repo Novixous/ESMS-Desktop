@@ -9,6 +9,7 @@ class CheckoutButton(KMDFlatButton):
     super(CheckoutButton, self).__init__(**kwargs)
 
   def on_touch_up(self, touch):
+    self.app.checkout_dialog.dismiss()
     if not touch.is_mouse_scrolling:
       if self.collide_point(touch.x, touch.y):
         if self.app.token is not None and self.app.shift_id is not None:
