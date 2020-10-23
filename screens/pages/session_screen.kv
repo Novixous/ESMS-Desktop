@@ -218,7 +218,7 @@
 
       BoxLayout:
         size_hint: [1, None]
-        height: 30
+        height: 25
 
         BoxLayout:
           size_hint: [0.25, 1]
@@ -467,11 +467,11 @@
 
       BoxLayout:
         size_hint: [1, None]
-        height: 100
+        height: 90
 
         BoxLayout:
           size_hint: [1, None]
-          height: 100
+          height: 90
           orientation: "vertical"
           padding: [10, 5, 10, 5]
           canvas.before:
@@ -503,7 +503,7 @@
 
       BoxLayout:
         size_hint: [1, None]
-        height: 60
+        height: 50
 
         BoxLayout:
           size_hint: [1, None]
@@ -924,6 +924,188 @@
         theme_text_color: "Custom"
         text_color: hex("#34A853") if app.session_result_map is not None and app.session_result_map["emotion_level"] > 0 else (hex("#EA4335") if app.session_result_map is not None and app.session_result_map["emotion_level"] < 0 else hex("#4285F4"))
         text: "Positive" if app.session_result_map is not None and app.session_result_map["emotion_level"] > 0 else ("Negative" if app.session_result_map is not None and app.session_result_map["emotion_level"] < 0 else "Neutral")
+
+  BoxLayout:
+    size_hint: [1, 1]
+
+<ShiftSummaryContent>:
+  size_hint: [None, None]
+  width: 800
+  height: 220
+  orientation: "vertical"
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 80
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Total Sessions count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["totalSessions"]) if app.shift_summary_map is not None else "0"
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 60
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Negative Sessions count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["negativeSessions"]) if app.shift_summary_map is not None else "0"
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Neutral Sessions count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["neutralSessions"]) if app.shift_summary_map is not None else "0"
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Positive Sessions count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["positiveSessions"]) if app.shift_summary_map is not None else "0"
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 60
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Emotionless Sessions count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["emotionlessSessions"]) if app.shift_summary_map is not None else "0"
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Angry Warnings count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["angryWarnings"]) if app.shift_summary_map is not None else "0"
+
+    BoxLayout:
+      size_hint: [1, None]
+      height: 60
+      orientation: "vertical"
+      padding: [10, 5, 10, 5]
+      canvas.before:
+        Color:
+          rgba: hex("#AAAAAA")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      MDLabel:
+        font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: hex("#607D8B")
+        markup: True
+        text: "[u]Leaving Warnings count:[/u]"
+
+      MDLabel:
+        font_size: 18
+        text: str(app.shift_summary_map["noFaceWarnings"]) if app.shift_summary_map is not None else "0"
 
   BoxLayout:
     size_hint: [1, 1]

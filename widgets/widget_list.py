@@ -17,3 +17,5 @@ from widgets.session_screen.category_list import CategoryList
 from widgets.session_screen.category_group import CategoryGroup
 from widgets.session_screen.task_item import TaskItem
 from widgets.session_screen.task_sheets import TaskSheets
+from widgets.session_screen.session_result_dialog import SessionResultDialog, SessionResultContent
+from widgets.session_screen.shift_summary import ShiftSummaryDialog, ShiftSummaryContent

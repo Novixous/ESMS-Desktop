@@ -12,9 +12,11 @@ from kivy.properties import StringProperty, ObjectProperty
 from PathUtil import resource_path
 from widgets.session_screen.checkout_dialog import CheckoutDialog
 from widgets.session_screen.session_result_dialog import SessionResultDialog, SessionResultContent
+from widgets.session_screen.shift_summary import ShiftSummaryDialog, ShiftSummaryContent
 from widgets.checkout_button import CheckoutButton
 
 import widgets.widget_list
+import requests
 from kivy.core.window import Window
 
 class ESMSApp(MDApp):
@@ -28,6 +30,9 @@ class ESMSApp(MDApp):
   session_result_dialog = None
   session_result_content = None
   session_result_map = ObjectProperty(None)
+  shift_summary_dialog = None
+  shift_summary_content = None
+  shift_summary_map = ObjectProperty(None)
   login_window = None
   full_screen_window = None
 
@@ -45,6 +50,18 @@ class ESMSApp(MDApp):
         CheckoutButton()
       ]
     )
+
+    self.shift_summary_content = ShiftSummaryContent()
+    self.shift_summary_dialog = ShiftSummaryDialog(
+      title='SHIFT SUMMARY',
+      type='custom',
+      content_cls=self.shift_summary_content,
+      buttons=[
+        CheckoutButton()
+      ]
+    )
+    self.shift_summary_dialog.width = self.shift_summary_dialog.content_cls.width + 50
+
     self.session_result_content = SessionResultContent()
     self.session_result_dialog = SessionResultDialog(
       title='SESSION RESULT',
@@ -90,6 +107,20 @@ class ESMSApp(MDApp):
     return str(hours) + f' hour{"" if hours == 1 else "s"} ' + (
       self.ms_to_str(ms % 3600000, call_count)
     )
+
+  def open_shift_summary(self, *args):
+    if self.token is not None and self.shift_id is not None:
+      bearer_token = f'Bearer {self.token}'
+      headers = {'Authorization': bearer_token}
+      response = requests.get(
+        f'{self.end_point}/shifts/{self.shift_id}/summary',
+        headers=headers
+      )
+      print('===========\n====get shift summary', response, response.json())
+      json_respone = response.json()
+      data = json_respone['message']
+      self.shift_summary_map = data
+      self.shift_summary_dialog.open()
 
   pass
 
