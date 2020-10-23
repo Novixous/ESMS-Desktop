@@ -1,4 +1,5 @@
 import math
+import json
 from Detection.emotion_stream_handler import angry_duration as ANGRY_DURATION
 NO_FACE_DETECTED_DURATION = 3*60*60
 emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
@@ -24,6 +25,7 @@ class SessionEvaluator:
         self.angry_duration_warning_max = 0
         self.no_face_detected_duration_warning_max = 0
         self.emotionless_warning = False
+        self.emotion_level = 0
         for i in range(0, 8):
             self.emotions_duration.append(0)
             self.emotions_period_count.append(0)
@@ -76,6 +78,8 @@ class SessionEvaluator:
                 score = self.modified_sigmoid(positive_point-negative_point)
         elif neutral_duration_percentage > 0.7:
             self.emotionless_warning = True
+        session_info.emotion_level = score
+        self.emotion_level = score
         print("Session Duration: {}".format(session_duration))
         for i in range(0, 8):
             print("=============================================")
@@ -100,6 +104,7 @@ class SessionEvaluator:
         print("Duration: {}".format(self.unidentified_period_duration))
         print("_________________result:")
         print(score)
-        print(self.__dict__)
+        # print(self.__dict__)
+        return json.dumps(self.__dict__)
 
         

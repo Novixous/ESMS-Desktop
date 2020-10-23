@@ -45,12 +45,14 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         session_info = streamHandler.finish()
         break
+session_evaluator = SessionEvaluator()
+result = session_evaluator.evaluate(session_info)
+print("#*#*#*#*# Result:")
+print(result)
 for i in range(0, len(session_info.periods)):
     print("===={}==== size: {}".format(emotion_dict[i], len(session_info.periods[i])))
     for period in session_info.periods[i]:
         print(period.__dict__)
         duration = int(round((period.period_start - period.period_end)*1000))
-session_evaluator = SessionEvaluator()
-session_evaluator.evaluate(session_info)
 cap.release()
 cv2.destroyAllWindows() 
