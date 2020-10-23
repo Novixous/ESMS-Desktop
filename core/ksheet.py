@@ -48,7 +48,7 @@ class KSheetLabel(MDBoxLayout):
 
   pass
 
-class KSheetBase(MDBoxLayout):
+class KSheetBase(MDBoxLayout, KObject):
   ksheets = ObjectProperty(None)
   previous_sheet = None
   next_sheet = None
@@ -56,6 +56,7 @@ class KSheetBase(MDBoxLayout):
   text_label = StringProperty(None)
 
   def __init__(self, **kwargs):
+    self.skip_self_register = True
     super(KSheetBase, self).__init__(**kwargs)
     self.label = KSheetLabel(ksheet=self, text=self.text_label)
 
@@ -132,7 +133,7 @@ class KSheets(AnchorLayout, KObject):
 
   def on_sheet_remove(self, sheet):
     """Called when remove a sheet."""
-    self.remove_widget(sheet)
+    self.remove_sheet(sheet)
 
   def add_widget(self, widget, index=0, canvas=None):
     if issubclass(widget.__class__, KSheetBase):
@@ -147,21 +148,31 @@ class KSheets(AnchorLayout, KObject):
     else:
       super().add_widget(widget)
 
+  def add_sheet(self, sheet):
+    self.add_widget(sheet)
+
   def remove_widget(self, widget):
     if not issubclass(widget.__class__, KSheetBase):
       raise KSheetsException(
         'KSheets can remove only subclass of KSheetBase'
       )
     if widget is not None:
+      if widget is self.first_sheet:
+        self.first_sheet = widget.next_sheet
       if widget.previous_sheet is not None:
         widget.previous_sheet.next_sheet = widget.next_sheet
       if widget.next_sheet is not None:
         widget.next_sheet.previous_sheet = widget.previous_sheet
-      if widget.previous_sheet is None and widget.next_sheet is None:
-        self.first_sheet = None
     self.bar.layout.remove_widget(widget.label)
     self.main.clear_widgets()
     if self.first_sheet is not None:
       self.main.add_widget(self.bar.layout.active_sheet.ksheet)
+
+  def remove_sheet(self, sheet):
+    self.remove_widget(sheet)
+
+  def clear_sheets(self):
+    while self.first_sheet is not None:
+      self.remove_sheet(self.first_sheet)
 
   pass

@@ -14,6 +14,7 @@ from Detection.SessionEvaluator import SessionEvaluator
 from PathUtil import resource_path
 from helpers.ksocket import KSocketClient
 from .warning_dialog import WarningDialog
+import requests
 
 class CameraImage(KImage):
 
@@ -26,8 +27,8 @@ class CameraImage(KImage):
     self.detect_thread = None
     self.warning_dialog = WarningDialog(
       auto_dismiss=False,
-      title="BE CAREFUL",
-      text="Your expression seems like critically negative!"
+      title='BE CAREFUL',
+      text='Your expression seems like critically negative!'
     )
     self.is_warning = False
 
@@ -81,8 +82,8 @@ class CameraImage(KImage):
       cv2.ocl.setUseOpenCL(False)
 
       # dictionary which assigns each label an emotion (alphabetical order)
-      emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
-      emotion_colors = {7: "#000000", 0: "#FF005A", 1: "#33CC33", 2: "#9933FF", 3: "#FFCC00", 4: "#996600", 5: "#0099FF", 6: "#33CCCC"}
+      emotion_dict = {7: 'No face detected', 0: 'Angry', 1: 'Disgusted', 2: 'Fearful', 3: 'Happy', 4: 'Neutral', 5: 'Sad', 6: 'Surprised'}
+      emotion_colors = {7: '#000000', 0: '#FF005A', 1: '#33CC33', 2: '#9933FF', 3: '#FFCC00', 4: '#996600', 5: '#0099FF', 6: '#33CCCC'}
 
       cap = cv2.VideoCapture(0)
       streamHandler = EmotionStreamHandler()
@@ -135,11 +136,31 @@ class CameraImage(KImage):
           break
       Clock.unschedule(self.client_recv)
       sessionInfo = streamHandler.finish()
-      for i in range(0, len(sessionInfo.periods)):
-        print("===={}==== size: {}".format(emotion_dict[i], len(sessionInfo.periods[i])))
-        for period in sessionInfo.periods[i]:
-          print(period.__dict__)
-          duration = int(round((period.periodEnd - period.periodStart)*1000))
+      if self.app.token is not None and self.app.session_id is not None:
+        bearer_token = f'Bearer {self.app.token}'
+        headers = {'Authorization': bearer_token}
+        emotion_data = {'emotions': []}
+        count = 1
+        for ep in sessionInfo.periods:
+          emo = {'emotion': count}
+          emo['periods'] = []
+          for p in ep:
+            emo['periods'].append({
+              'periodStart':p.periodStart,
+              'periodEnd':p.periodEnd,
+              'duration':p.duration
+            })
+          emotion_data['emotions'].append(emo)
+          count = count + 1
+        response = requests.put(
+          f'{self.app.end_point}/sessions/{self.app.session_id}/end',
+          json=emotion_data,
+          headers=headers
+        )
+        self.app.session_id = None
+        print('===========\n====end session send emo', response, response.json())
+        self.app.queuelist.load_queue()
+        self.app.mainscreenmanager.current = 'queue_screen'
       sessionEvaluator = SessionEvaluator()
       sessionEvaluator.evaluate(sessionInfo)
       cap.release()

@@ -12,12 +12,12 @@ class PickQueueButton(KMDIconButton):
     if self.app.token is not None:
       bearer_token = f'Bearer {self.app.token}'
       headers = {'Authorization': bearer_token}
-      print('self.app.counter_id:', self.app.counter_id)
       if self.app.counter_id is None:
         response = requests.get(
           f'{self.app.end_point}/counters',
           headers=headers
         )
+        # print('===========\n====get counters', response, response.json())
         json_respone = response.json()
         data = json_respone['message']
         self.app.counter_id = data['counterId']
@@ -25,17 +25,25 @@ class PickQueueButton(KMDIconButton):
       res2 = requests.post(
         f'{self.app.end_point}/queues/assign',
         headers=headers,
-        data={'counterId':self.app.counter_id,'queueId':self.queue_id}
+        json={'counterId':self.app.counter_id,'queueId':self.queue_id}
       )
+      # print('===========\n====assign queue', res2, res2.json())
 
       res3 = requests.post(
         f'{self.app.end_point}/sessions',
         headers=headers
       )
+      # print('===========\n====create session', res3, res3.json())
       json_res3 = res3.json()
       data3 = json_res3['message']
       self.app.session_id = data3['id']
 
-      self.app.categorylist.load_categories()
-      self.app.mainscreenmanager.current = 'session_screen'
-      self.app.cameraimage.open_camera()
+      if self.app.session_id is not None:
+        res4 = requests.put(
+          f'{self.app.end_point}/sessions/{self.app.session_id}/start',
+          headers=headers
+        )
+        # print('===========\n====start session', res4, res4.json())
+        self.app.categorylist.load_categories()
+        self.app.mainscreenmanager.current = 'session_screen'
+        self.app.cameraimage.open_camera()

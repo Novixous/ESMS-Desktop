@@ -1,0 +1,99 @@
+#:import hex kivy.utils.get_color_from_hex
+
+<ShiftItem>:
+  size_hint_y: None
+  height: content.height
+  focus_behavior: True
+
+  MDCardSwipeLayerBox:
+    padding: 8
+
+    CheckinButton:
+      queue_id: root.shift.shid
+      icon: "check"
+      pos_hint: {"center_y": .5}
+      action: root.checkin_shift
+
+  MDCardSwipeFrontBox:
+
+    ThreeLineIconListItem:
+      id: content
+      text: root.shift.shift_name
+      secondary_text: 'From: ' + root.shift.shift_start
+      tertiary_text: 'To: ' + root.shift.shift_end
+      _no_ripple_effect: True
+
+      IconLeftWidget:
+        icon: "account-convert"
+
+<CheckinScreen@Screen>:
+  name: "checkin_screen"
+
+  BoxLayout:
+    orientation: "vertical"
+
+    MDLabel:
+
+      font_size: 35
+      size_hint: [1, 0.1]
+      halign: "center"
+      text_size: (None, None)
+      markup: True
+      text: "[color=#607D8B]ESMS[/color][color=#888888][size=28] Checkin[/size][/color]"
+
+    MDLabel:
+
+      font_size: 18
+      size_hint: [0.4, 0.05]
+      pos_hint: {"center_x": 0.5}
+      text_size: (None, None)
+      text: "To checkin:"
+
+    BoxLayout:
+      size_hint: [0.4, None]
+      height: self.minimum_height
+      pos_hint: {"center_x": 0.5}
+
+      canvas.before:
+        Color:
+          rgba: hex("#607D8B")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      ScrollView:
+        size_hint: [1, None]
+        height: active_shift_list.height
+        scroll_type: ["bars", "content"]
+
+        ActiveShiftList:
+          id: active_shift_list
+          padding: 0
+
+    MDLabel:
+
+      font_size: 18
+      size_hint: [0.4, 0.05]
+      pos_hint: {"center_x": 0.5}
+      text_size: (None, None)
+      text: "Upcoming:"
+
+    BoxLayout:
+      size_hint: [0.4, 0.4]
+      pos_hint: {"center_x": 0.5}
+
+      canvas.before:
+        Color:
+          rgba: hex("#607D8B")
+        Line:
+          width: 0.5
+          rectangle: self.x, self.y, self.width, self.height
+
+      ScrollView:
+        scroll_type: ["bars", "content"]
+
+        ShiftList:
+          padding: 0
+
+    BoxLayout:
+      size_hint: [1, 0.05]

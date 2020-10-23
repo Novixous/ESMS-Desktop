@@ -25,8 +25,8 @@ class QueueList(KMDList):
         f'{self.app.end_point}/queues',
         headers=headers
       )
+      # print('===========\n====get queue', response, response.json())
       json_respone = response.json()
-      queues = []
       data = json_respone['message']
       for d in data:
         qno = d['number']
@@ -36,15 +36,12 @@ class QueueList(KMDList):
           number=qno[(len(qno) - 4):],
           category=d['Category']['categoryName']
         )
-        queues.append(queue)
-      if len(queues) > 0:
-        for q in queues:
-          self.add_widget(
-            QueueItem(
-              queue=q,
-              skip_self_register=True
-            )
+        self.add_widget(
+          QueueItem(
+            queue=queue,
+            skip_self_register=True
           )
+        )
 
   def remove_from_queue(self, item):
     self.remove_widget(item)

@@ -11,19 +11,21 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from PathUtil import resource_path
 from widgets.session_screen.checkout_dialog import CheckoutDialog
-from kivymd.uix.button import MDFlatButton
+from widgets.checkout_button import CheckoutButton
 
 import widgets.widget_list
 from kivy.core.window import Window
-Window.clearcolor = (0, 0, 0, 1)
 
 class ESMSApp(MDApp):
-  token = StringProperty(None)
-  counter_id = NumericProperty(None)
-  shift_id = NumericProperty(None)
-  session_id = NumericProperty(None)
-  emotion_color = StringProperty('#000000')
-  end_point = StringProperty('http://localhost:4000')
+  token = None
+  counter_id = None
+  shift_id = None
+  session_id = None
+  emotion_color = StringProperty('#888888')
+  end_point = 'http://localhost:4000'
+  checkout_dialog = None
+  login_window = None
+  full_screen_window = None
 
   def __init__(self, **kwargs):
     super(ESMSApp, self).__init__(**kwargs)
@@ -32,29 +34,29 @@ class ESMSApp(MDApp):
   def build(self):
     self.theme_cls.primary_palette = 'BlueGray'
     layout = Builder.load_file(resource_path('main.kv'))
-    self.do_exit_btn = MDFlatButton(
-      text='CHECK OUT',
-      text_color=self.theme_cls.primary_color
-    )
-    self.do_exit_btn.bind(on_press=self.do_exit_window)
     self.checkout_dialog = CheckoutDialog(
       title='CHECK OUT SHIFT',
       text='Do you want to check out this shift and logout?',
       buttons=[
-        self.do_exit_btn
+        CheckoutButton()
       ]
     )
+    self.login_window = {
+      'width': Window.width,
+      'height': Window.height,
+      'top': Window.top,
+      'left': Window.left
+    }
     return layout
 
   def on_exit_window(self, *args):
-    if self.mainscreenmanager.current != 'login_screen':
+    if (
+      self.mainscreenmanager.current != 'login_screen'
+      and self.mainscreenmanager.current != 'checkin_screen'
+    ):
       if not self.checkout_dialog._window:
         self.checkout_dialog.open()
       return True
-
-  def do_exit_window(self, *args):
-    Window.unbind(on_request_close=self.on_exit_window)
-    Window.close()
 
   def set_emotion_color(self, color):
     self.emotion_color = color

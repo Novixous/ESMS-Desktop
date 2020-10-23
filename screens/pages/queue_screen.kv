@@ -30,14 +30,31 @@
   BoxLayout:
     orientation: "vertical"
 
-    MDLabel:
-
-      font_size: 35
+    BoxLayout:
       size_hint: [1, 0.1]
-      halign: "center"
-      text_size: (None, None)
-      markup: True
-      text: "[color=#607D8B]ESMS[/color][color=#888888][size=28] Customer Queue[/size][/color]"
+      padding: [20, 0, 20, 0]
+
+      BoxLayout:
+        size_hint: [None, None]
+        width: checkout_btn.width
+
+      MDLabel:
+
+        font_size: 35
+        size_hint: [1, 1]
+        halign: "center"
+        text_size: (None, None)
+        markup: True
+        text: "[color=#607D8B]ESMS[/color][color=#888888][size=28] Customer Queue[/size][/color]"
+
+      MDRectangleFlatIconButton:
+        id: checkout_btn
+        size_hint: [None, None]
+        pos_hint: {"center_y": 0.5}
+        icon: "logout-variant"
+        text: "CHECK OUT"
+        on_release:
+          app.checkout_dialog.open()
 
     BoxLayout:
       size_hint: [0.4, 0.8]

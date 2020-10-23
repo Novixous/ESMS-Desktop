@@ -19,8 +19,9 @@ class LoginButton(KMDRectangleFlatButton):
     password = self.emp_pass_inp.text
     response = requests.post(
       f'{self.app.end_point}/login',
-      data={'employeeCode': employeeCode, 'password': password}
+      json={'employeeCode': employeeCode, 'password': password}
     )
+    # print('===========\n====login', response, response.json())
     json_respone = response.json()
     loginSuccess = json_respone['status']
 
@@ -34,11 +35,39 @@ class LoginButton(KMDRectangleFlatButton):
         f'{self.app.end_point}/shifts/active-shift',
         headers=headers
       )
+      # print('===========\n====active shift', response2, response2.json())
       json_respone2 = response2.json()
       active_shifts = json_respone2['message']
       if active_shifts is not None and len(active_shifts) > 0:
         self.app.shift_id = active_shifts[0]['id']
         self.app.counter_id = active_shifts[0]['counterId']
+
         self.app.queuelist.load_queue()
-        Window.maximize()
+        if self.app.full_screen_window is not None:
+          Window.size = (self.app.full_screen_window['width'], self.app.full_screen_window['height'])
+          Window.top = self.app.full_screen_window['top']
+          Window.left = self.app.full_screen_window['left']
+        else:
+          Window.maximize()
+          self.app.full_screen_window = {
+            'width': Window.width,
+            'height': Window.height,
+            'top': Window.top,
+            'left': Window.left
+          }
         self.app.mainscreenmanager.current = 'queue_screen'
+      else:
+        self.app.shiftlist.load_shift()
+        if self.app.full_screen_window is not None:
+          Window.size = (self.app.full_screen_window['width'], self.app.full_screen_window['height'])
+          Window.top = self.app.full_screen_window['top']
+          Window.left = self.app.full_screen_window['left']
+        else:
+          Window.maximize()
+          self.app.full_screen_window = {
+            'width': Window.width,
+            'height': Window.height,
+            'top': Window.top,
+            'left': Window.left
+          }
+        self.app.mainscreenmanager.current = 'checkin_screen'

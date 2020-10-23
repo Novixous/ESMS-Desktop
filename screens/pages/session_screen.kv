@@ -49,9 +49,10 @@
       theme_text_color: "Custom"
       text_color: hex("#FFFFFF") if root.state == "inactive" else hex("#607D8B")
       on_release:
+        app.tasksheets.remove_session_task(root.ksheet.session_task.stid)
         root.remove()
 
-<KSheetBase>:
+<TaskSheetBase>:
 
   ScrollView:
     scroll_type: ["bars", "content"]
@@ -190,6 +191,8 @@
             size_hint: [1, None]
             height: 30
             text: "DONE"
+            on_release:
+              root.complete_session_task()
 
 <KSheetsScrollView>:
   size_hint: 1, 1
@@ -260,6 +263,7 @@
       CompleteSessionButton:
         size_hint: [None, None]
         pos_hint: {"center_y": 0.5}
+        icon: "progress-check"
         text: "COMPLETE SESSION"
 
     BoxLayout:

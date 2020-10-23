@@ -21,12 +21,13 @@ class CategoryList(KMDList):
         f'{self.app.end_point}/categories/counters/{self.app.counter_id}',
         headers=headers
       )
+      # print('===========\n====get categories by counter', response, response.json())
       json_respone = response.json()
       data = json_respone['message']
       for d in data:
         cat = Category(
-          cid=d['id'],
-          name=d['categoryName']
+          cid=d['Category']['id'],
+          name=d['Category']['categoryName']
         )
         cat_group = CategoryGroup(
           category=cat,

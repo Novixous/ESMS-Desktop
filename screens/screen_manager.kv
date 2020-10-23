@@ -1,12 +1,21 @@
 #:import KScreenManager core.kscreenmanager.KScreenManager
 
 #:include screens/pages/login_screen.kv
+#:include screens/pages/checkin_screen.kv
 #:include screens/pages/queue_screen.kv
 #:include screens/pages/session_screen.kv
 
 <MainScreenManager@KScreenManager>:
 
   LoginScreen:
+    canvas.before:
+      Color:
+        rgba: 1, 1, 1, 1
+      Rectangle:
+        pos: self.pos
+        size: self.size
+
+  CheckinScreen:
     canvas.before:
       Color:
         rgba: 1, 1, 1, 1

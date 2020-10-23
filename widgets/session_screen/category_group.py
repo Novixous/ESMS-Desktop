@@ -26,17 +26,18 @@ class CategoryGroup(KMDExpansionPanel):
       bearer_token = f'Bearer {self.app.token}'
       headers = {'Authorization': bearer_token}
       response = requests.get(
-        f'{self.app.end_point}/task-type/{self.category.cid}',
+        f'{self.app.end_point}/categories/{self.category.cid}/tasks',
         headers=headers
       )
+      # print('===========\n====get tasks by category', response, response.json())
       json_response = response.json()
       data = json_response['message']
       task_list = MDList()
       for d in data:
         t = Task(
           tid=d['id'],
-          name=d['typeName'],
-          code=d['taskCode']
+          name=d['name'],
+          code=d['code']
         )
         task_list.add_widget(
           TaskItem(

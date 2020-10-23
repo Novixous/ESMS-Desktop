@@ -1,12 +1,12 @@
-from core.kbutton import KMDRectangleFlatButton
+from core.kbutton import KMDFillRoundFlatIconButton
 
-class CompleteSessionButton(KMDRectangleFlatButton):
+class CompleteSessionButton(KMDFillRoundFlatIconButton):
 
   def __init__(self, **kwargs):
     super(CompleteSessionButton, self).__init__(**kwargs)
 
   def action(self, *args):
     self.app.queuelist.clear_queue()
+    self.app.tasksheets.clear_sheets()
     self.app.cameraimage.close_camera()
-    self.app.queuelist.load_queue()
-    self.app.mainscreenmanager.current = 'queue_screen'
+    self.app.emotion_color = '#888888'

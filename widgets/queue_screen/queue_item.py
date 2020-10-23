@@ -15,7 +15,7 @@ class QueueItem(KMDCardSwipe):
   def on_touch_up(self, touch):
     if not touch.is_mouse_scrolling:
       if self.collide_point(touch.x, touch.y):
-        if self.state == "closed" and not self.is_closing:
+        if self.state == 'closed' and not self.is_closing:
           if self.app.queuelist.active_item is not None:
             self.app.queuelist.active_item.close_card()
           self.app.queuelist.active_item = self
