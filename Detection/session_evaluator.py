@@ -1,9 +1,9 @@
 import math
 import json
 from Detection.emotion_stream_handler import angry_duration as ANGRY_DURATION
-NO_FACE_DETECTED_DURATION = 3*60*60
+NO_FACE_DETECTED_DURATION = 3*60*1000
 emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
-negative_emotions = [0, 1, 2, 5]
+negative_emotions = [0, 1, 2, 5, 7]
 positive_emotions = [3, 6]
 positive_weight = 0.495
 negative_weight = 0.505
