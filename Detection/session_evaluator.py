@@ -5,10 +5,11 @@ NO_FACE_DETECTED_DURATION = 3*60*60
 emotion_dict = {7: "No face detected", 0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 negative_emotions = [0, 1, 2, 5]
 positive_emotions = [3, 6]
-positive_weight = 49.5
-negative_weight = 50.5
+positive_weight = 0.495
+negative_weight = 0.505
 class SessionEvaluator:
     def __init__(self):
+        self.total_session_duration = 0
         self.emotions_duration = []
         self.emotions_period_count = []
         self.negative_emotions_duration = 0
@@ -31,10 +32,11 @@ class SessionEvaluator:
             self.emotions_period_count.append(0)
 
     def modified_sigmoid(self, x):
-        return 2 / (1 + math.exp(-0.05*x)) -1
+        return round(2 / (1 + math.exp(-0.05*x)) -1, 6)
 
     def evaluate(self, session_info):
         result = ""
+        self.total_session_duration = int(round((session_info.session_end - session_info.session_begin)*1000))
         for periods in session_info.periods:
             for period in periods:
                 self.emotions_duration[period.emotion] += period.duration
@@ -71,11 +73,20 @@ class SessionEvaluator:
         neutral_duration_percentage = self.neutral_emotions_duration / session_duration
         sum_negative_positive_duration = self.negative_emotions_duration + self.positive_emotions_duration
         score = 0
+        tmp_negative_duration = self.negative_emotions_duration * negative_weight
+        tmp_positive_duration = self.positive_emotions_duration * positive_weight
+        print("{} x {} = ".format(self.negative_emotions_duration, negative_weight))
+        print("temp neg: {}".format(tmp_negative_duration))
+        print("{} x {} = ".format(self.positive_emotions_duration, positive_weight))
+        print("temp pos: {}".format(tmp_positive_duration))
+        sum_tmp_negative_positive_duration = tmp_negative_duration + tmp_positive_duration
+        print("tmp sum: {}".format(sum_tmp_negative_positive_duration))
         if neutral_duration_percentage < 0.50:
             if sum_negative_positive_duration != 0:
-                negative_point = (self.negative_emotions_duration / sum_negative_positive_duration)*negative_weight*100
-                positive_point = (self.positive_emotions_duration / sum_negative_positive_duration)*positive_weight*100
-                score = self.modified_sigmoid(positive_point-negative_point)
+                negative_point = (tmp_negative_duration / sum_tmp_negative_positive_duration)*100
+                positive_point = (tmp_positive_duration / sum_tmp_negative_positive_duration)*100
+                print("different: {}".format(positive_point - negative_point))
+                score = self.modified_sigmoid(positive_point - negative_point)
         elif neutral_duration_percentage > 0.7:
             self.emotionless_warning = True
         session_info.emotion_level = score
