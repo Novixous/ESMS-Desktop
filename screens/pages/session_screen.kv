@@ -58,134 +58,459 @@
     scroll_type: ["bars", "content"]
 
     MDList:
-      padding: 50, 30, 50, 50
+      padding: [50, 0, 50, 0]
 
       MDLabel:
         size_hint: [1, None]
-        font_size: 28
-        height: 80
+        font_style: "H6"
+        height: 60
         text_size: (None, None)
         markup: True
-        text: "[color=#455A64][b]" + root.text_label + "[/b][/color]"
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDTextField:
-          size_hint: [1, None]
-          height: 30
-          hint_text: "Customer Full Name"
-          write_tab: False
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDTextField:
-          size_hint: [1, None]
-          height: 30
-          hint_text: "Customer ID Card"
-          write_tab: False
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDTextField:
-          size_hint: [1, None]
-          height: 30
-          hint_text: "Customer Phone"
-          write_tab: False
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDTextField:
-          size_hint: [1, None]
-          height: 30
-          hint_text: "Customer Address"
-          write_tab: False
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDTextField:
-          size_hint: [1, None]
-          height: 30
-          hint_text: "Account Number"
-          write_tab: False
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDTextField:
-          size_hint: [1, None]
-          height: 30
-          hint_text: "Amount"
-          write_tab: False
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDCheckbox:
-          size_hint: [None, None]
-          size: (40, 40)
-          pos_hint: {"center_y": .5}
-
-        MDLabel:
-          size_hint: [1, None]
-          height: 30
-          pos_hint: {"center_y": .5}
-          theme_text_color: "Custom"
-          text_color: hex("#607D8B")
-          text: "Confirmation 1"
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDCheckbox:
-          size_hint: [None, None]
-          size: (40, 40)
-          pos_hint: {"center_y": .5}
-
-        MDLabel:
-          size_hint: [1, None]
-          height: 30
-          pos_hint: {"center_y": .5}
-          theme_text_color: "Custom"
-          text_color: hex("#607D8B")
-          text: "Confirmation 2"
-
-      BoxLayout:
-        size_hint: [1, None]
-        height: 60
-
-        MDCheckbox:
-          size_hint: [None, None]
-          size: (40, 40)
-          pos_hint: {"center_y": .5}
-
-        MDLabel:
-          size_hint: [1, None]
-          height: 30
-          pos_hint: {"center_y": .5}
-          theme_text_color: "Custom"
-          text_color: hex("#607D8B")
-          text: "Confirmation 3"
+        text: "[u]Sender Information[/u]"
 
       BoxLayout:
         size_hint: [1, None]
         height: 60
 
         BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Customer Name [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "ID Card [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Phone"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Account Number [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+      MDLabel:
+        size_hint: [1, None]
+        font_style: "H6"
+        height: 60
+        text_size: (None, None)
+        markup: True
+        text: "[u]Receiver Information[/u]"
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 30
+
+        BoxLayout:
+          size_hint: [0.25, 1]
+
+          MDCheckbox:
+            size_hint: [None, None]
+            size: (40, 40)
+            pos_hint: {"center_y": .5}
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 30
+            pos_hint: {"center_y": .5}
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            text: "Within Bank"
+
+        BoxLayout:
+          size_hint: [0.25, 1]
+
+          MDCheckbox:
+            size_hint: [None, None]
+            size: (40, 40)
+            pos_hint: {"center_y": .5}
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 30
+            pos_hint: {"center_y": .5}
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            text: "Self Receive"
+
+        BoxLayout:
+          size_hint: [0.5, 1]
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 70
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Inter-bank [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Province/City [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Receiver Name [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Account Number [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Phone"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 60
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Amount (VND) [color=#EA4335]*[/color]"
+
+          TextInput:
+            size_hint: [1, 1]
+            multiline: False
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 100
+
+        BoxLayout:
+          size_hint: [1, None]
+          height: 100
+          orientation: "vertical"
+          padding: [10, 5, 10, 5]
+          canvas.before:
+            Color:
+              rgba: hex("#AAAAAA")
+            Line:
+              width: 0.5
+              rectangle: self.x, self.y, self.width, self.height
+
+          MDLabel:
+            size_hint: [1, None]
+            height: 20
+            font_style: "Body2"
+            theme_text_color: "Custom"
+            text_color: hex("#607D8B")
+            markup: True
+            text: "Remark"
+
+          TextInput:
+            size_hint: [1, 1]
+            font_size: 18
+            border: [0, 0, 0, 0]
+            padding: [0, 5, 0, 0]
+            background_normal: ""
+            background_active: ""
+            cursor_width: 2
+            cursor_color: app.theme_cls.primary_color
+            write_tab: False
+
+      BoxLayout:
+        size_hint: [1, None]
+        height: 60
+
+        BoxLayout:
+          size_hint: [1, None]
+
+        BoxLayout:
           size_hint: [None, 1]
-          width: 100
+          width: 200
 
           MDRectangleFlatButton:
             size_hint: [1, None]
