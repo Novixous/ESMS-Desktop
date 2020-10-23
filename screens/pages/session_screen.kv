@@ -364,3 +364,103 @@
             rectangle: self.x, self.y, self.width, self.height
 
         TaskSheets:
+
+<SessionResultContent>:
+  size_hint: [None, None]
+  spacing: 12
+  width: 800
+  height: 600
+  orientation: "vertical"
+
+  BoxLayout:
+    size_hint: [1, None]
+
+    BoxLayout:
+      size_hint: [1, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Total Session duration"
+        text: str(app.session_result_map["total_session_duration"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 50
+    spacing: 18
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Total Negative expression duration"
+        text: str(app.session_result_map["negative_emotions_duration"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Total Neutral expression duration"
+        text: str(app.session_result_map["neutral_emotions_duration"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Total Positive expression duration"
+        text: str(app.session_result_map["positive_emotions_duration"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 50
+    spacing: 18
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Angry warning count"
+        text: str(app.session_result_map["angry_warning"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Max Angry expression duration"
+        text: str(app.session_result_map["angry_duration_warning_max"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+  BoxLayout:
+    size_hint: [1, None]
+    height: 50
+    spacing: 18
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Leaving Workspace warning count"
+        text: str(app.session_result_map["angry_warning"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+    BoxLayout:
+      size_hint: [0.5, None]
+
+      MDTextField:
+        mode: "rectangle"
+        hint_text: "Max Leaving Workspace duration"
+        text: str(app.session_result_map["angry_duration_warning_max"]) if app.session_result_map is not None else "0"
+        current_hint_text_color: [0, 0, 0, 1]
+
+  BoxLayout:
+    size_hint: [1, 1]

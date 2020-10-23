@@ -6,15 +6,16 @@ import numpy as np
 import threading
 import socket
 import os
-from Detection.EmotionDetector import EmotionDetector
-from Detection.EmotionStreamHandler import EmotionStreamHandler
-from Detection.Model.FrameInfo import FrameInfo
-from Detection.Model.SessionInfo import SessionInfo
-from Detection.SessionEvaluator import SessionEvaluator
+from Detection.emotion_detector import EmotionDetector
+from Detection.emotion_stream_handler import EmotionStreamHandler
+from Detection.Model.frame_info import FrameInfo
+from Detection.Model.session_info import SessionInfo
+from Detection.session_evaluator import SessionEvaluator
 from PathUtil import resource_path
 from helpers.ksocket import KSocketClient
 from .warning_dialog import WarningDialog
 import requests
+import json
 
 class CameraImage(KImage):
 
@@ -31,6 +32,7 @@ class CameraImage(KImage):
       text='Your expression seems like critically negative!'
     )
     self.is_warning = False
+    self.session_result = None
 
   def open_camera(self):
     self.status = 'started'
@@ -54,8 +56,8 @@ class CameraImage(KImage):
             cv2.imwrite(resource_path('assets/v.jpg'), img_decoded)
             self.source = 'assets/v.jpg'
             self.reload()
-            if self.emotion_color is not None:
-              self.app.set_emotion_color(self.emotion_color)
+            # if self.emotion_color is not None:
+            #   self.app.set_emotion_color(self.emotion_color)
           else:
             self.source = 'assets/video.jpg'
             self.reload()
@@ -74,96 +76,101 @@ class CameraImage(KImage):
     self.warning_dialog.dismiss()
 
   def detect_from_camera(self):
-    try:
-      server_stream_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      server_stream_socket.bind((socket.gethostname(), self.stream_port))
-      server_stream_socket.listen()
-      # prevents openCL usage and unnecessary logging messages
-      cv2.ocl.setUseOpenCL(False)
+    # try:
+    server_stream_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_stream_socket.bind((socket.gethostname(), self.stream_port))
+    server_stream_socket.listen()
+    # prevents openCL usage and unnecessary logging messages
+    cv2.ocl.setUseOpenCL(False)
 
-      # dictionary which assigns each label an emotion (alphabetical order)
-      emotion_dict = {7: 'No face detected', 0: 'Angry', 1: 'Disgusted', 2: 'Fearful', 3: 'Happy', 4: 'Neutral', 5: 'Sad', 6: 'Surprised'}
-      emotion_colors = {7: '#000000', 0: '#FF005A', 1: '#33CC33', 2: '#9933FF', 3: '#FFCC00', 4: '#996600', 5: '#0099FF', 6: '#33CCCC'}
+    # dictionary which assigns each label an emotion (alphabetical order)
+    emotion_dict = {7: 'No face detected', 0: 'Angry', 1: 'Disgusted', 2: 'Fearful', 3: 'Happy', 4: 'Neutral', 5: 'Sad', 6: 'Surprised'}
+    # emotion_colors = {7: '#000000', 0: '#FF005A', 1: '#33CC33', 2: '#9933FF', 3: '#FFCC00', 4: '#996600', 5: '#0099FF', 6: '#33CCCC'}
 
-      cap = cv2.VideoCapture(0)
-      streamHandler = EmotionStreamHandler()
-      emotionDetector = EmotionDetector()
-      sessionInfo = SessionInfo(None, None, None, None)
+    cap = cv2.VideoCapture(0)
+    streamHandler = EmotionStreamHandler()
+    emotionDetector = EmotionDetector()
+    sessionInfo = SessionInfo(None, None, None, None, None)
 
-      while True:
-        (connection, address) = server_stream_socket.accept()
-        hasFace = False
-        # Find haar cascade to draw bounding box around face
-        ret, frame = cap.read()
-        if not ret:
-          break
-        frame = cv2.flip(frame, 1)
+    while True:
+      (connection, address) = server_stream_socket.accept()
+      hasFace = False
+      # Find haar cascade to draw bounding box around face
+      ret, frame = cap.read()
+      if not ret:
+        break
+      frame = cv2.flip(frame, 1)
 
-        facecasc = cv2.CascadeClassifier(resource_path('Detection\haarcascade_frontalface_default.xml'))
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = facecasc.detectMultiScale(gray,scaleFactor=1.3, minNeighbors=5)
-        frameInfo = FrameInfo(None, None, None)
+      facecasc = cv2.CascadeClassifier(resource_path('Detection\haarcascade_frontalface_default.xml'))
+      gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+      faces = facecasc.detectMultiScale(gray,scaleFactor=1.3, minNeighbors=5)
+      frameInfo = FrameInfo(None, None, None)
 
-        for (x, y, w, h) in faces:
-          hasFace = True
-          roi_gray = gray[y:y + h, x:x + w]
-          cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
-          maxindex = emotionDetector.detectEmotion(cropped_img)
-          cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
-          cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+      for (x, y, w, h) in faces:
+        hasFace = True
+        roi_gray = gray[y:y + h, x:x + w]
+        cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
+        maxindex = emotionDetector.detect_emotion(cropped_img)
+        # cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
+        # cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
-          streamHandler.addFrame(maxindex)
-          self.emotion_color = emotion_colors[maxindex]
-        if hasFace is not True:
-          streamHandler.addFrame(7)
-          self.emotion_color = emotion_colors[7]
+        streamHandler.add_frame(maxindex)
+        # self.emotion_color = emotion_colors[maxindex]
+      if hasFace is not True:
+        streamHandler.add_frame(7)
+        # self.emotion_color = emotion_colors[7]
 
-        if streamHandler.warning:
-          if not self.warning_dialog._window:
-            self.show_warning_dialog()
-        else:
-          if self.warning_dialog._window:
-            self.hide_warning_dialog()
+      if streamHandler.warning:
+        if not self.warning_dialog._window:
+          self.show_warning_dialog()
+      else:
+        if self.warning_dialog._window:
+          self.hide_warning_dialog()
 
-        img = cv2.resize(frame,(400,300),interpolation = cv2.INTER_CUBIC)
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-        result, img_encoded = cv2.imencode('.jpg', img, encode_param)
-        data_encoded = np.array(img_encoded)
-        str_encoded = data_encoded.tostring()
-        connection.sendall(str_encoded)
-        connection.close()
-        if self.status == 'ended':
-          break
-      Clock.unschedule(self.client_recv)
-      sessionInfo = streamHandler.finish()
-      if self.app.token is not None and self.app.session_id is not None:
-        bearer_token = f'Bearer {self.app.token}'
-        headers = {'Authorization': bearer_token}
-        emotion_data = {'emotions': []}
-        count = 1
-        for ep in sessionInfo.periods:
-          emo = {'emotion': count}
-          emo['periods'] = []
-          for p in ep:
-            emo['periods'].append({
-              'periodStart':p.periodStart,
-              'periodEnd':p.periodEnd,
-              'duration':p.duration
-            })
-          emotion_data['emotions'].append(emo)
-          count = count + 1
-        response = requests.put(
-          f'{self.app.end_point}/sessions/{self.app.session_id}/end',
-          json=emotion_data,
-          headers=headers
-        )
-        self.app.session_id = None
-        print('===========\n====end session send emo', response, response.json())
-        self.app.queuelist.load_queue()
-        self.app.mainscreenmanager.current = 'queue_screen'
-      sessionEvaluator = SessionEvaluator()
-      sessionEvaluator.evaluate(sessionInfo)
-      cap.release()
-      cv2.destroyAllWindows()
-    except:
-      pass
+      img = cv2.resize(frame,(400,300),interpolation = cv2.INTER_CUBIC)
+      encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+      result, img_encoded = cv2.imencode('.jpg', img, encode_param)
+      data_encoded = np.array(img_encoded)
+      str_encoded = data_encoded.tostring()
+      connection.sendall(str_encoded)
+      connection.close()
+      if self.status == 'ended':
+        break
+    Clock.unschedule(self.client_recv)
+    sessionInfo = streamHandler.finish()
+    sessionEvaluator = SessionEvaluator()
+    self.session_result = sessionEvaluator.evaluate(sessionInfo)
+    print('session result:', self.session_result)
+    if self.app.token is not None and self.app.session_id is not None:
+      bearer_token = f'Bearer {self.app.token}'
+      headers = {'Authorization': bearer_token}
+      emotion_data = {'emotions': []}
+      count = 1
+      for ep in sessionInfo.periods:
+        emo = {'emotion': count}
+        emo['periods'] = []
+        for p in ep:
+          emo['periods'].append({
+            'periodStart':p.period_start,
+            'periodEnd':p.period_end,
+            'duration':p.duration
+          })
+        emotion_data['emotions'].append(emo)
+        count = count + 1
+      emotion_data['info'] = self.session_result
+      response = requests.put(
+        f'{self.app.end_point}/sessions/{self.app.session_id}/end',
+        json=emotion_data,
+        headers=headers
+      )
+      self.app.session_id = None
+      print('===========\n====end session send emo', response, response.json())
+      self.app.queuelist.load_queue()
+      self.app.mainscreenmanager.current = 'queue_screen'
+      result_map = json.loads(self.session_result)
+      self.app.session_result_map = result_map
+      self.app.session_result_dialog.open()
+    cap.release()
+    cv2.destroyAllWindows()
+    # except:
+    #   pass

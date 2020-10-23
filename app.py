@@ -8,9 +8,10 @@ Config.set('graphics', 'height', '340')
 
 from kivymd.app import MDApp
 from kivy.lang import Builder
-from kivy.properties import StringProperty, NumericProperty, ObjectProperty
+from kivy.properties import StringProperty, ObjectProperty
 from PathUtil import resource_path
 from widgets.session_screen.checkout_dialog import CheckoutDialog
+from widgets.session_screen.session_result_dialog import SessionResultDialog, SessionResultContent
 from widgets.checkout_button import CheckoutButton
 
 import widgets.widget_list
@@ -24,6 +25,9 @@ class ESMSApp(MDApp):
   emotion_color = StringProperty('#888888')
   end_point = 'http://localhost:4000'
   checkout_dialog = None
+  session_result_dialog = None
+  session_result_content = None
+  session_result_map = ObjectProperty(None)
   login_window = None
   full_screen_window = None
 
@@ -41,6 +45,13 @@ class ESMSApp(MDApp):
         CheckoutButton()
       ]
     )
+    self.session_result_content = SessionResultContent()
+    self.session_result_dialog = SessionResultDialog(
+      title='SESSION RESULT',
+      type='custom',
+      content_cls=self.session_result_content
+    )
+    self.session_result_dialog.width = self.session_result_dialog.content_cls.width + 50
     self.login_window = {
       'width': Window.width,
       'height': Window.height,

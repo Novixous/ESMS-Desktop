@@ -28,4 +28,4 @@ class CheckoutButton(KMDFlatButton):
             Window.size = (self.app.login_window['width'], self.app.login_window['height'])
             Window.top = self.app.login_window['top']
             Window.left = self.app.login_window['left']
-          Clock.schedule_once(resize_window)
+          Clock.schedule_once(resize_window, 0.1)
