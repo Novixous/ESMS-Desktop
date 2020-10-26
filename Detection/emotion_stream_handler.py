@@ -104,5 +104,9 @@ class EmotionStreamHandler:
         #         duration = int(round((period.period_end - period.period_start)*1000))
         # print("__________________________________________________________________________________________")
         # print("__________________________________________________________________________________________")
+        for periods in self.periods:
+            for period in periods:
+                period.period_start = int(round((period.period_start - self.session_begind)*1000))
+                period.period_end = int(round((period.period_end - self.session_begind)*1000))
         session_info = SessionInfo(self.frames, self.session_begind, self.temp_time, self.periods, None) 
         return session_info
