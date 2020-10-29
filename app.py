@@ -25,7 +25,7 @@ class ESMSApp(MDApp):
   shift_id = None
   session_id = None
   emotion_color = StringProperty('#888888')
-  end_point = 'http://localhost:4000'
+  end_point = 'http://api.esms-team.site'
   checkout_dialog = None
   session_result_dialog = None
   session_result_content = None
