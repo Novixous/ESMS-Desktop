@@ -6,7 +6,6 @@ class CompleteSessionButton(KMDFillRoundFlatIconButton):
     super(CompleteSessionButton, self).__init__(**kwargs)
 
   def action(self, *args):
-    self.app.queuelist.clear_queue()
     self.app.tasksheets.clear_sheets()
     self.app.cameraimage.close_camera()
     self.app.emotion_color = '#888888'

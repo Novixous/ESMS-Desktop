@@ -17,6 +17,7 @@ class QueueList(KMDList):
     super(QueueList, self).__init__(**kwargs)
 
   def load_queue(self):
+    self.clear_queue()
     self.app.categorylist.clear_categories()
     if self.app.token is not None:
       bearer_token = f'Bearer {self.app.token}'
