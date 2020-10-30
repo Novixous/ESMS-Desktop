@@ -11,7 +11,7 @@ from Detection.emotion_stream_handler import EmotionStreamHandler
 from Detection.Model.frame_info import FrameInfo
 from Detection.Model.session_info import SessionInfo
 from Detection.session_evaluator import SessionEvaluator
-from PathUtil import resource_path
+from path_util import resource_path
 from helpers.ksocket import KSocketClient
 from .warning_dialog import WarningDialog
 import requests

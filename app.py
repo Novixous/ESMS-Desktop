@@ -9,7 +9,7 @@ Config.set('graphics', 'height', '340')
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
-from PathUtil import resource_path
+from path_util import resource_path
 from widgets.session_screen.checkout_dialog import CheckoutDialog
 from widgets.session_screen.session_result_dialog import SessionResultDialog, SessionResultContent
 from widgets.session_screen.shift_summary import ShiftSummaryDialog, ShiftSummaryContent
