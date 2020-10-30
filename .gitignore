@@ -4,3 +4,7 @@ venv/
 **/build/
 **/dist/
 **.spec
+
+data.json
+
+temp_vid.mp4

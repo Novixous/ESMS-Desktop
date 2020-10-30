@@ -58,8 +58,8 @@ class EmotionStreamHandler:
         self.temp_time = time.time()
         
         passed_time = int(round((self.temp_time - self.session_begind)*1000))
-
         self.current_frame = FrameInfo(self.temp_time, passed_time, emotion)
+        self.frames.append(self.current_frame)
         self.count+=1
         if self.previous_frame.timestamp is not None:
             for i in range(0, 8):
