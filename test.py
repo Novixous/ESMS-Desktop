@@ -5,7 +5,7 @@ from Detection.Model.session_info import SessionInfo
 from Detection.session_evaluator import SessionEvaluator
 import cv2
 import numpy as np
-from PathUtil import resource_path
+from path_util import resource_path
 import json
 
 # prevents openCL usage and unnecessary logging messages
