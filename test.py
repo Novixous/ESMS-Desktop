@@ -8,6 +8,12 @@ import numpy as np
 from path_util import resource_path
 import json
 
+import asyncio
+import datetime
+import random
+import websockets
+import base64
+
 # prevents openCL usage and unnecessary logging messages
 cv2.ocl.setUseOpenCL(False)
 
@@ -29,47 +35,67 @@ session_info = SessionInfo(None, None, None, None, None)
 video_out = "temp_vid.mp4"
 video_writer = cv2.VideoWriter(
             video_out, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
-while True:
-    hasFace = False
-    # Find haar cascade to draw bounding box around face
-    ret, frame = cap.read()
-    if not ret:
-        break
-    frame = cv2.flip(frame, 1)
+def encode_img(img):
+    """Encodes an image as a png and encodes to base 64 for display."""
+    success, encoded_img = cv2.imencode('.png', img)
+    if success:
+        return base64.b64encode(encoded_img).decode()
+    return ''
+async def start(websocket, path):
+    while True:
+        hasFace = False
+        # Find haar cascade to draw bounding box around face
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frame = cv2.flip(frame, 1)
 
-    video_writer.write(cv2.resize(frame,(width, height),interpolation = cv2.INTER_CUBIC))
-        
-    facecasc = cv2.CascadeClassifier(resource_path('Detection\haarcascade_frontalface_default.xml'))
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = facecasc.detectMultiScale(gray,scaleFactor=1.3, minNeighbors=5)
-    frameInfo = FrameInfo(None, None, None)  
+        video_writer.write(cv2.resize(frame,(width, height),interpolation = cv2.INTER_CUBIC))
+            
+        facecasc = cv2.CascadeClassifier(resource_path('Detection\haarcascade_frontalface_default.xml'))
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = facecasc.detectMultiScale(gray,scaleFactor=1.3, minNeighbors=5)
+        frameInfo = FrameInfo(None, None, None)  
 
-    for (x, y, w, h) in faces:
-        hasFace = True
-        cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
-        roi_gray = gray[y:y + h, x:x + w]
-        cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
-        maxindex = emotionDetector.detect_emotion(cropped_img)
-        cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+        for (x, y, w, h) in faces:
+            hasFace = True
+            cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
+            roi_gray = gray[y:y + h, x:x + w]
+            cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
+            maxindex = emotionDetector.detect_emotion(cropped_img)
+            cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            
+            streamHandler.add_frame(maxindex)
+        if hasFace is not True:
+            streamHandler.add_frame(7)
+        cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
         
-        streamHandler.add_frame(maxindex)
-    if hasFace is not True:
-        streamHandler.add_frame(7)
-    cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC)) 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        session_info = streamHandler.finish()
-        video_writer.release()
-        with open('data.json', 'w') as outfile:
-            json.dump([frame_obj.__dict__ for frame_obj in session_info.frames], outfile)
-        break
-session_evaluator = SessionEvaluator()
-result = session_evaluator.evaluate(session_info)
-print("#*#*#*#*# Result:")
-print(result)
-for i in range(0, len(session_info.periods)):
-    print("===={}==== size: {}".format(emotion_dict[i], len(session_info.periods[i])))
-    for period in session_info.periods[i]:
-        print(period.__dict__)
-        duration = int(round((period.period_start - period.period_end)*1000))
-cap.release()
-cv2.destroyAllWindows() 
+        my_img = cv2.resize(frame,(424,240),interpolation = cv2.INTER_CUBIC)
+        encoded_img = encode_img(my_img)
+        b64_src = 'data:image/png;base64,'
+        img_src = b64_src + encoded_img
+        await websocket.send(img_src)
+        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            session_info = streamHandler.finish()
+            video_writer.release()
+            with open('data.json', 'w') as outfile:
+                json.dump([frame_obj.__dict__ for frame_obj in session_info.frames], outfile)
+            break
+    # session_evaluator = SessionEvaluator()
+    # result = session_evaluator.evaluate(session_info)
+    # print("#*#*#*#*# Result:")
+    # print(result)
+    # for i in range(0, len(session_info.periods)):
+    #     print("===={}==== size: {}".format(emotion_dict[i], len(session_info.periods[i])))
+    #     for period in session_info.periods[i]:
+    #         print(period.__dict__)
+    #         duration = int(round((period.period_start - period.period_end)*1000))
+    cap.release()
+    cv2.destroyAllWindows()
+
+start_server = websockets.serve(start, "127.0.0.1", 5678)
+print("started")
+
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()

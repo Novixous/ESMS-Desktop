@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket demo</title>
+        <img src=""/>
+    </head>
+    <body>
+        <script>
+            var ws = new WebSocket("ws://127.0.0.1:5678/")
+            var image = document.getElementsByTagName("img")[0];
+            ws.onmessage = function (event) {
+                image.src = event.data;                
+            };
+        </script>
+    </body>
+</html>
