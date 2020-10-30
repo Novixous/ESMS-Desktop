@@ -54,14 +54,14 @@ class CameraImage(KImage):
           img_decoded = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
           if self.status == 'started':
             cv2.imwrite(resource_path('assets/v.jpg'), img_decoded)
-            self.source = 'assets/v.jpg'
+            self.source = resource_path('assets/v.jpg')
             self.reload()
             # if self.emotion_color is not None:
             #   self.app.set_emotion_color(self.emotion_color)
           else:
-            self.source = 'assets/video.jpg'
+            self.source = resource_path('assets/video.jpg')
             self.reload()
-            os.remove('assets/v.jpg')
+            os.remove(resource_path('assets/v.jpg'))
       except ConnectionRefusedError:
         print('Hello ConnectionRefusedError')
     else:
